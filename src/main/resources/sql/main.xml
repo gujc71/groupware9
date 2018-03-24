@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="main">
+
+    <select id="selectRecentNews" resultType="gu.board.BoardVO">
+        SELECT BRDNO, BRDTITLE, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE
+             , TB.USERNO, USERNM BRDWRITER, BGNAME, TB.BGNO
+             , (SELECT COUNT(*) FROM TBL_BOARDREPLY WHERE BRDNO=TB.BRDNO AND REDELETEFLAG='N') REPLYCNT
+          FROM TBL_BOARD TB
+         INNER JOIN COM_USER CU ON TB.USERNO=CU.USERNO
+         INNER JOIN TBL_BOARDGROUP TBG ON TBG.BGNO=TB.BGNO
+         WHERE BRDDELETEFLAG='N' AND TBG.BGDELETEFLAG='N'
+         ORDER BY BRDNO DESC 
+         LIMIT 15
+    </select> 
+    
+    <select id="selectTimeLine" resultType="gu.board.BoardReplyVO" >
+        SELECT TB.BRDNO, LEFT(TB.BRDTITLE, 10) REMEMO, USERNM REWRITER, PHOTO
+             , UF_DATETIME2STRING(REDATE) REDATE
+          FROM TBL_BOARD TB
+         INNER JOIN TBL_BOARDREPLY TBR ON TBR.BRDNO=TB.BRDNO
+         INNER JOIN COM_USER CU ON TBR.USERNO=CU.USERNO
+         WHERE BRDDELETEFLAG='N' AND REDELETEFLAG='N'
+         ORDER BY TBR.REDATE DESC
+         LIMIT 20
+    </select>
+    
+    <select id="selectNoticeListTop5" parameterType="gu.board.BoardSearchVO" resultType="gu.board.BoardVO">
+        SELECT BRDNO, BRDTITLE, DATE_FORMAT(BRDDATE,'%Y-%m-%d') BRDDATE, BRDNOTICE
+             , TB.USERNO, USERNM BRDWRITER
+          FROM TBL_BOARD TB
+         INNER JOIN COM_USER CU ON TB.USERNO=CU.USERNO
+         WHERE BRDDELETEFLAG='N' AND BRDNOTICE='Y'
+         ORDER BY BRDNO DESC 
+         LIMIT 5
+    </select> 
+     
+</mapper>
+
