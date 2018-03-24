@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2018-03-24 13:48:41</creation_date>
-			<updated_date>2018-03-24 15:38:50</updated_date>
+			<updated_date>2018-03-24 22:25:47</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -1631,7 +1631,7 @@
 			<connections>
 				<relation>
 					<id>1</id>
-					<source>0</source>
+					<source>9</source>
 					<target>4</target>
 						<source_xp>-1</source_xp>
 						<source_yp>-1</source_yp>
@@ -1653,7 +1653,7 @@
 				</relation>
 				<relation>
 					<id>2</id>
-					<source>9</source>
+					<source>0</source>
 					<target>4</target>
 						<source_xp>-1</source_xp>
 						<source_yp>-1</source_yp>
@@ -1717,7 +1717,7 @@
 				<normal_column>
 					<id>13</id>
 					<referenced_column>27</referenced_column>
-					<relation>2</relation>
+					<relation>1</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
@@ -1916,7 +1916,7 @@
 				<normal_column>
 					<id>19</id>
 					<referenced_column>0</referenced_column>
-					<relation>1</relation>
+					<relation>2</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
@@ -2001,7 +2001,7 @@
 				<font_name>맑은 고딕</font_name>
 				<font_size>9</font_size>
 			<x>240</x>
-			<y>384</y>
+			<y>355</y>
 			<color>
 				<r>128</r>
 				<g>128</g>
@@ -2663,7 +2663,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>51</word_id>
+					<word_id>52</word_id>
 					<id>34</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -3299,7 +3299,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>52</word_id>
+					<word_id>51</word_id>
 					<id>51</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
