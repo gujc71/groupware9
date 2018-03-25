@@ -50,8 +50,7 @@ public class BoardCtr {
         
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
         
         if (searchVO.getBgno() != null && !"".equals(searchVO.getBgno())) {
             BoardGroupVO bgInfo = boardSvc.selectBoardGroupOne4Used(searchVO.getBgno());
@@ -83,8 +82,7 @@ public class BoardCtr {
     public String boardForm(HttpServletRequest request, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
         
         String bgno = request.getParameter("bgno");
         String brdno = request.getParameter("brdno");
@@ -139,8 +137,7 @@ public class BoardCtr {
     public String boardRead(HttpServletRequest request, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
         
         String bgno = request.getParameter("bgno");
         String brdno = request.getParameter("brdno");

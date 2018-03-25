@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="ad_sign">
+
+    <sql id="includeSignDocType">
+        WHERE DELETEFLAG='N'
+        <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+            <foreach item="item" index="index" collection="searchTypeArr" separator=" OR " open="AND (" close=")">
+                 ${item} LIKE CONCAT('%', #{searchKeyword},'%' )
+            </foreach>
+        </if>               
+    </sql>
+
+    <select id="selectSignDocTypeCount" resultType="Integer" parameterType="gu.common.SearchVO">
+        SELECT COUNT(*)
+          FROM SGN_DOCTYPE SDT
+         <include refid="includeSignDocType"/>
+    </select> 
+    
+    <select id="selectSignDocTypeList" resultType="gu.admin.sign.SignDocTypeVO" parameterType="gu.common.SearchVO">
+        SELECT DTNO, DTTITLE, DTCONTENTS
+          FROM SGN_DOCTYPE SDT
+         <include refid="includeSignDocType"/>
+         ORDER BY DTNO DESC
+         <if test="rowStart != null">
+             LIMIT ${rowStart-1}, 10
+         </if>
+    </select> 
+
+    <insert id="insertSignDocType" parameterType="gu.admin.sign.SignDocTypeVO" >
+        INSERT INTO SGN_DOCTYPE(DTTITLE, DTCONTENTS, DELETEFLAG)
+        VALUES (#{dttitle}, #{dtcontents}, 'N')
+    </insert>
+    
+    <update id="updateSignDocType" parameterType="gu.admin.sign.SignDocTypeVO">
+        UPDATE SGN_DOCTYPE
+           SET DTTITLE=#{dttitle}, DTCONTENTS=#{dtcontents}
+         WHERE DTNO=#{dtno} 
+    </update> 
+        
+    <select id="selectSignDocTypeOne" parameterType="gu.admin.sign.SignDocTypeVO" resultType="gu.admin.sign.SignDocTypeVO">
+        SELECT DTNO, DTTITLE, DTCONTENTS
+          FROM SGN_DOCTYPE SDT
+         WHERE DELETEFLAG='N' AND DTNO=#{dtno}
+    </select> 
+    
+    <delete id="deleteSignDocType" parameterType="gu.admin.sign.SignDocTypeVO">
+        UPDATE SGN_DOCTYPE
+           SET DELETEFLAG='Y'
+         WHERE DTNO=#{dtno} 
+    </delete> 
+
+</mapper>
+

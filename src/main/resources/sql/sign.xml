@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="sign">
+
+    <sql id="includeSign">
+        WHERE SD.DELETEFLAG='N' AND SD.USERNO=${userno}
+        <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+            <foreach item="item" index="index" collection="searchTypeArr" separator=" OR " open="AND (" close=")">
+                 ${item} LIKE CONCAT('%', #{searchKeyword},'%' )
+            </foreach>
+        </if>               
+    </sql>
+
+    <select id="selectSignCount" resultType="Integer" parameterType="gu.common.SearchVO">
+        SELECT COUNT(*)
+          FROM SGN_DOC SD
+         <include refid="includeSign"/>
+    </select> 
+    
+    <select id="selectSignList" resultType="gu.sign.SignVO" parameterType="gu.common.SearchVO">
+        SELECT DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCCONTENTS, DOCSTEP, SD.DTNO, SDT.DTTITLE, DEPTNM
+        	 , DATE_FORMAT(UPDATEDATE,'%Y-%m-%d') UPDATEDATE, CODENM DOCSTATUS
+          FROM SGN_DOC SD
+         INNER JOIN COM_USER CU ON SD.USERNO=CU.USERNO
+         INNER JOIN SGN_DOCTYPE SDT ON SDT.DTNO=SD.DTNO
+         INNER JOIN COM_CODE CC ON CC.CODECD=SD.DOCSTATUS AND CLASSNO='2'
+         <include refid="includeSign"/>
+         ORDER BY DOCNO DESC
+         <if test="rowStart != null">
+             LIMIT ${rowStart-1}, 10
+         </if>
+    </select> 
+        
+    <insert id="insertSign" parameterType="gu.sign.SignVO" >
+        INSERT INTO SGN_DOC(DOCTITLE, USERNO, DOCCONTENTS, DOCSTATUS, DOCSTEP, DTNO, DEPTNM, UPDATEDATE, INSERTDATE, DELETEFLAG)
+        VALUES (#{doctitle}, #{userno}, #{doccontents}, 1, 1, #{dtno}, #{deptnm}, NOW(), NOW(), 'N')
+    </insert>
+    
+    <update id="updateSign" parameterType="gu.sign.SignVO">
+        UPDATE SGN_DOC
+           SET DOCTITLE=#{doctitle}, DOCCONTENTS=#{doccontents}
+             , UPDATEDATE=NOW()
+         WHERE DOCNO=#{docno} 
+    </update> 
+        
+    <select id="selectSignOne" parameterType="gu.sign.SignVO" resultType="gu.sign.SignVO">
+        SELECT DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCCONTENTS, DOCSTATUS, DOCSTEP, DTNO, DEPTNM
+             , DATE_FORMAT(UPDATEDATE,'%Y-%m-%d') UPDATEDATE
+          FROM SGN_DOC SD
+         INNER JOIN COM_USER CU ON SD.USERNO=CU.USERNO
+         WHERE SD.DELETEFLAG='N' AND DOCNO=#{docno}
+    </select> 
+    
+    <delete id="deleteSign" parameterType="gu.sign.SignVO">
+        UPDATE SGN_DOC
+           SET DELETEFLAG='Y'
+         WHERE DOCNO=#{docno} 
+    </delete> 
+
+</mapper>
+

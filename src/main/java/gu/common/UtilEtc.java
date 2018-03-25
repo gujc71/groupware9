@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import gu.board.BoardSvc;
 
 public class UtilEtc {
-    static final Logger LOGGER = LoggerFactory.getLogger(BoardSvc.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(UtilEtc.class);
 
     /**
      * JSON (String)을 문자열로 변환하여 클라이언트에 전송.

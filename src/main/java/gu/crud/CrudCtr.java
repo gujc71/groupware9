@@ -32,8 +32,7 @@ public class CrudCtr {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
     	
         // CRUD 관련
         searchVO.pageCalculate( crudSvc.selectCrudCount(searchVO) ); // startRow, endRow
@@ -53,8 +52,7 @@ public class CrudCtr {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
     	
         // CRUD 관련
         if (crudInfo.getCrno() != null) {
@@ -87,8 +85,7 @@ public class CrudCtr {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
     	
         // CRUD 관련
         

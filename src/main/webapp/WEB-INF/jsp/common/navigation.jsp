@@ -86,6 +86,20 @@
                             <a href="boardList"><i class="fa fa-files-o fa-fw"></i> <s:message code="board.boardName"/></a>
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-edit fa-fw"></i> 전자결재<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+                                <li>
+                                    <a href="signDocTypeList">기안하기</a>
+                                </li>
+                                <li>
+		                            <a href="signListTobe">결재 받을 문서 </a>
+                                </li>
+                                <li>
+		                            <a href="signListTo">결재 할 문서</a>
+                                </li>
+	                        </ul>                             
+                        </li>                        
+                        <li>
                             <a href="#"><i class="fa fa-music fa-fw"></i> 샘플<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
                                 <li>
@@ -127,7 +141,7 @@
 	                            </ul>
 	                        </li>
                              <li>
-                                 <a href="adCodeList"><i class="fa fa-gear fa-fw"></i> <s:message code="memu.code"/></a>
+                                 <a href="adSignDocTypeList"><i class="fa fa-edit fa-fw"></i> 결재문서양식</a>
                              </li>
 	                	</c:if>	        
                     </ul>

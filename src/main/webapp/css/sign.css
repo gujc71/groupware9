@@ -1,0 +1,34 @@
+.signTitle { 
+	height:90px; 
+	width:30px; 
+	border: 1px solid #dedede; 
+	text-align:center; 
+	vertical-align:middle; 
+	float:right;
+}
+
+.signPath {
+	float:right;
+}
+
+.signArea { 
+	display:inline-block; 
+	border:1px solid #dedede; 
+	text-align:center; 
+	height:100%; 
+	width:100px; 
+	vertical-align:top;
+	margin: 0px 5px;
+}
+.signAreaCenter { 
+	border-top: 1px solid #dedede; 
+	border-bottom: 1px solid #dedede; 
+	height:50px; 
+	width:100%; 
+}
+.signAreaBottom { 
+	height:20px; 
+}
+.signAreaTop { 
+	height:20px; 
+}

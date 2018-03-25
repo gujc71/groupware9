@@ -5,6 +5,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import gu.board.BoardSearchVO;
 
@@ -13,7 +14,12 @@ public class EtcSvc {
 
     @Autowired
     private SqlSessionTemplate sqlSession;    
-        
+
+    public void setCommonAttribute(String param, ModelMap modelMap) {
+        Integer alertcount = sqlSession.selectOne("selectAlertCount", param);
+        modelMap.addAttribute("alertcount", alertcount);    	
+    }
+
     public Integer selectAlertCount(String param) {
         return sqlSession.selectOne("selectAlertCount", param);
     }

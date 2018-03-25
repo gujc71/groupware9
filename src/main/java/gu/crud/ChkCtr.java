@@ -32,8 +32,7 @@ public class ChkCtr {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
     	
         // CRUD 관련
         searchVO.pageCalculate( crudSvc.selectCrudCount(searchVO) ); // startRow, endRow

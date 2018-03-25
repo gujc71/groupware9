@@ -7,6 +7,7 @@ public class SearchVO extends PageVO  {
     private String searchType = "";            // 검색 필드: 제목, 내용  
     private String[] searchTypeArr;            // 검색 필드를 배열로 변환
     private String searchExt1 = "";            // 검색 확장 필드  
+    private String userno;  
     
     public String getSearchKeyword() {
         return searchKeyword;
@@ -35,6 +36,14 @@ public class SearchVO extends PageVO  {
     public void setSearchExt1(String searchExt1) {
         this.searchExt1 = searchExt1;
     }
+
+	public String getUserno() {
+		return userno;
+	}
+
+	public void setUserno(String userno) {
+		this.userno = userno;
+	}
     
 }
  

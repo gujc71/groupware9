@@ -39,8 +39,7 @@ public class SampleCtr {
     public String sample1(HttpServletRequest request, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
         
         return "main/sample1";
     }
@@ -52,8 +51,7 @@ public class SampleCtr {
     public String sample2(HttpServletRequest request, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
         // -----------------------------------------
         
         String today = Util4calen.date2Str(Util4calen.getToday());
@@ -69,8 +67,7 @@ public class SampleCtr {
     public String sample3(HttpServletRequest request, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
         // -----------------------------------------
         
         List<?> listview = sampleSvc.selectBoardGroupCount4Statistic();
@@ -86,8 +83,7 @@ public class SampleCtr {
     public String sample4(HttpServletRequest request, BoardSearchVO searchVO, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
         // -----------------------------------------
         
         searchVO.pageCalculate( boardSvc.selectBoardCount(searchVO) ); // startRow, endRow

@@ -42,15 +42,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     }
     
     public void postHandle(HttpServletRequest req, HttpServletResponse res, Object handler, ModelAndView mv) {
-    	if (mv==null) {
-        	LOGGER.debug("--------===========--------------------------------" + req.getRequestURI());
-    		
-    		return;
-    	}
-    	
-    	mv.addObject("alertcount", "10");
-    	
-    	LOGGER.debug("--------++++-----++++--------------------------------" + req.getRequestURI());
     }
     
     public void afterCompletion(HttpServletRequest req, HttpServletResponse res, Object handler, Exception ex) {

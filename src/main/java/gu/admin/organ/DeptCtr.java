@@ -30,8 +30,7 @@ public class DeptCtr {
        public String department(HttpServletRequest request, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
+        etcSvc.setCommonAttribute(userno, modelMap);
         
         List<?> listview   = deptSvc.selectDepartment();
 

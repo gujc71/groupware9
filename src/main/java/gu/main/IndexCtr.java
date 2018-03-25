@@ -29,13 +29,12 @@ public class IndexCtr {
     @RequestMapping(value = "/index")
     public String index(HttpServletRequest request, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
+        etcSvc.setCommonAttribute(userno, modelMap);
 
         Date today = Util4calen.getToday(); 
 
         calCalen(today, modelMap);
         
-        Integer alertcount = etcSvc.selectAlertCount(userno);
-        modelMap.addAttribute("alertcount", alertcount);
         
         List<?> listview = indexSvc.selectRecentNews();
         List<?> noticeList = indexSvc.selectNoticeListTop5();
