@@ -2,105 +2,95 @@ package gu.sign;
 
 public class SignVO {
 
-    private String docno,
-				    doctitle,
-				    doccontents,
-				    docstatus,		// 문서 상태
-				    docstep,		// 결재 단
-				    dtno,			// 양식번호
-				    dttitle,		// 양식명
-				    userno,
-				    usernm,
-				    deptnm,
-				    updatedate
-				    ;
+    private String  ssno,		// 결재번호
+					docno,		// 문서번호
+					ssstep, 	// 결재단계
+					sstype,		// 결재종류
+					ssresult,	// 결재결과
+					sscomment,	// 코멘트
+					receivedate,
+					signdate,
+					userno,
+					userpos;	// 직윈
+
+	public String getSsno() {
+		return ssno;
+	}
 
 	public String getDocno() {
 		return docno;
 	}
 
-	public String getDoctitle() {
-		return doctitle;
+	public String getSsstep() {
+		return ssstep;
 	}
 
-	public String getDoccontents() {
-		return doccontents;
+	public String getSstype() {
+		return sstype;
 	}
 
-	public String getDocstatus() {
-		return docstatus;
+	public String getSsresult() {
+		return ssresult;
 	}
 
-	public String getDocstep() {
-		return docstep;
+	public String getSscomment() {
+		return sscomment;
 	}
 
-	public String getDtno() {
-		return dtno;
+	public String getReceivedate() {
+		return receivedate;
+	}
+
+	public String getSigndate() {
+		return signdate;
 	}
 
 	public String getUserno() {
 		return userno;
 	}
 
-	public String getUsernm() {
-		return usernm;
-	}
-
-	public void setUsernm(String usernm) {
-		this.usernm = usernm;
-	}
-
-	public String getDeptnm() {
-		return deptnm;
+	public void setSsno(String ssno) {
+		this.ssno = ssno;
 	}
 
 	public void setDocno(String docno) {
 		this.docno = docno;
 	}
 
-	public void setDoctitle(String doctitle) {
-		this.doctitle = doctitle;
+	public void setSsstep(String ssstep) {
+		this.ssstep = ssstep;
 	}
 
-	public void setDoccontents(String doccontents) {
-		this.doccontents = doccontents;
+	public void setSstype(String sstype) {
+		this.sstype = sstype;
 	}
 
-	public void setDocstatus(String docstatus) {
-		this.docstatus = docstatus;
+	public void setSsresult(String ssresult) {
+		this.ssresult = ssresult;
 	}
 
-	public void setDocstep(String docstep) {
-		this.docstep = docstep;
+	public void setSscomment(String sscomment) {
+		this.sscomment = sscomment;
 	}
 
-	public void setDtno(String dtno) {
-		this.dtno = dtno;
+	public void setReceivedate(String receivedate) {
+		this.receivedate = receivedate;
 	}
 
-	public String getDttitle() {
-		return dttitle;
-	}
-
-	public void setDttitle(String dttitle) {
-		this.dttitle = dttitle;
+	public void setSigndate(String signdate) {
+		this.signdate = signdate;
 	}
 
 	public void setUserno(String userno) {
 		this.userno = userno;
 	}
 
-	public void setDeptnm(String deptnm) {
-		this.deptnm = deptnm;
+	public String getUserpos() {
+		return userpos;
 	}
 
-	public String getUpdatedate() {
-		return updatedate;
+	public void setUserpos(String userpos) {
+		this.userpos = userpos;
 	}
-
-	public void setUpdatedate(String updatedate) {
-		this.updatedate = updatedate;
-	} 
     
 }

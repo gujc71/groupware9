@@ -2,6 +2,36 @@ INSERT INTO `com_code` (`CLASSNO`, `CODECD`, `CODENM`) VALUES
 	(1, 'A', '관리자'),
 	(1, 'U', '사용자');
 
+INSERT INTO `com_code` (`CLASSNO`, `CODECD`, `CODENM`) VALUES
+	(2, '0', '임시저장'),
+	(2, '1', '대기중'),
+	(2, '2', '심사중'),
+	(2, '3', '반려'),
+	(2, '4', '결재 완료');
+
+INSERT INTO `com_code` (`CLASSNO`, `CODECD`, `CODENM`) VALUES
+	(3, '01', '선임'),
+	(3, '02', '주임'),
+	(3, '03', '대리'),
+	(3, '04', '과장'),
+	(3, '05', '차장'),
+	(3, '06', '부장'),
+	(3, '07', '이사'),
+	(3, '08', '상무'),
+	(3, '09', '전무'),
+	(3, '10', '부사장'),
+	(3, '11', '사장'),
+	(3, '12', '부회장'),
+	(3, '13', '회장');
+    
+ALTER TABLE COM_USER ADD (USERPOS VARCHAR(2)		 NULL  COMMENT '직위');
+
+UPDATE COM_USER SET USERPOS='01';
+    
+
+select * from com_code;
+
+
 INSERT INTO `com_dept` (`DEPTNO`, `DEPTNM`, `PARENTNO`, `DELETEFLAG`) VALUES
 	(1, '주식회사', NULL, 'N'),
 	(2, '기획실', 1, 'N'),

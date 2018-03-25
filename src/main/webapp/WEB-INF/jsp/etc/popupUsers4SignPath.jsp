@@ -17,14 +17,14 @@ $(function(){
 
 function set_Users(usernos) {
 	if (usernos==="") {
-		addRow(0, '<c:out value="${sessionScope.userno}"/>', '<c:out value="${sessionScope.usernm}"/>');
+		addRow(0, '<c:out value="${sessionScope.userno}"/>', '<c:out value="${sessionScope.usernm}"/>', '');
 		return;
 	}
 	var nos = usernos.split("||");
-	for (var i in nos) {
+	for (var i in nos) { 
 		if (nos[i]==="") continue;
-		var arr = nos[i].split(",");
-		addRow(arr[2], arr[0], arr[1]);
+		var arr = nos[i].split(","); // 사번, 이름, 기안/합의/결제, 직책 
+		addRow(arr[2], arr[0], arr[1], arr[3]);
 	}
 }
 
@@ -40,17 +40,17 @@ function fn_search4Users() {
 		}    		
     );
 }
-function fn_addUser(userno, usernm, deptnm) {
+function fn_addUser(userno, usernm, deptnm, userpos) {
     
     var chk = document.getElementById("tr"+userno);
     if (chk) {
     	alert("<s:message code="msg.err.existUser"/>");
     	return;
     }
-    addRow(2, userno, usernm);
+    addRow(2, userno, usernm, userpos);
 }
 
-function addRow(optionIndex, userno, usernm) {
+function addRow(optionIndex, userno, usernm, userpos) {
 	var tr = $("<tr id='tr" + userno +"'>");
 	$("#seletedUsers > tbody").append(tr);
 
@@ -73,6 +73,12 @@ function addRow(optionIndex, userno, usernm) {
 	td = $("<TD>");
 	tr.append(td);
 	td.html("<a href='javascript:fn_UserDelete(" + userno +")'><i class='fa fa-times fa-fw'></i></a>");
+	
+	if (userpos==="") userpos = typearr[optionIndex];
+	td = $("<TD>");
+	tr.append(td);
+	td.html(userpos);
+	td.css({"display": "none"});
 }
 
 function fn_UserDelete(userno) {
@@ -84,9 +90,10 @@ function fn_closeUsers() {
 	$("#seletedUsers > tbody  > tr").each(function() {
 		if (!this.id) return; 
 		var userno = this.id.replace("tr","");
-		var usernm = $(this).find('td:eq(1)').html();
+		var usernm = $(this).find('td:eq(1)').text();
 		var select = $(this).find('td:eq(0) > select').val();
-		ret += userno + "," +usernm + "," + select + "||";
+		var userpos = $(this).find('td:eq(3)').text();
+		ret += userno + "," +usernm + "," + select + "," + userpos + "||";
 	});
 	
 	fn_selectUsers(ret)
@@ -149,6 +156,7 @@ function fn_closeUsers() {
 												<th></th> 
 												<th><s:message code="common.name"/></th>
 												<th></th> 
+												<th style="display:none"></th> 
 											</tr>
 										</thead>
 										<tbody>

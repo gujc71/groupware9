@@ -3,7 +3,7 @@
 
 <mapper namespace="sign">
 
-    <sql id="includeSign">
+    <sql id="includeSignDoc">
         WHERE SD.DELETEFLAG='N' AND SD.USERNO=${userno}
         <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
             <foreach item="item" index="index" collection="searchTypeArr" separator=" OR " open="AND (" close=")">
@@ -12,39 +12,49 @@
         </if>               
     </sql>
 
-    <select id="selectSignCount" resultType="Integer" parameterType="gu.common.SearchVO">
+    <select id="selectSignDocCount" resultType="Integer" parameterType="gu.common.SearchVO">
         SELECT COUNT(*)
           FROM SGN_DOC SD
-         <include refid="includeSign"/>
+         <include refid="includeSignDoc"/>
     </select> 
     
-    <select id="selectSignList" resultType="gu.sign.SignVO" parameterType="gu.common.SearchVO">
-        SELECT DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCCONTENTS, DOCSTEP, SD.DTNO, SDT.DTTITLE, DEPTNM
+    <select id="selectSignDocList" resultType="gu.sign.SignDocVO" parameterType="gu.common.SearchVO">
+        SELECT DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCSTEP, SD.DTNO, SDT.DTTITLE, DEPTNM
         	 , DATE_FORMAT(UPDATEDATE,'%Y-%m-%d') UPDATEDATE, CODENM DOCSTATUS
           FROM SGN_DOC SD
          INNER JOIN COM_USER CU ON SD.USERNO=CU.USERNO
          INNER JOIN SGN_DOCTYPE SDT ON SDT.DTNO=SD.DTNO
          INNER JOIN COM_CODE CC ON CC.CODECD=SD.DOCSTATUS AND CLASSNO='2'
-         <include refid="includeSign"/>
+         <include refid="includeSignDoc"/>
          ORDER BY DOCNO DESC
          <if test="rowStart != null">
              LIMIT ${rowStart-1}, 10
          </if>
     </select> 
         
-    <insert id="insertSign" parameterType="gu.sign.SignVO" >
-        INSERT INTO SGN_DOC(DOCTITLE, USERNO, DOCCONTENTS, DOCSTATUS, DOCSTEP, DTNO, DEPTNM, UPDATEDATE, INSERTDATE, DELETEFLAG)
-        VALUES (#{doctitle}, #{userno}, #{doccontents}, 1, 1, #{dtno}, #{deptnm}, NOW(), NOW(), 'N')
+    <insert id="insertSignDoc" parameterType="gu.sign.SignDocVO"  useGeneratedKeys="true" keyProperty="docno">
+        INSERT INTO SGN_DOC(DOCTITLE, USERNO, DOCCONTENTS, DOCSTATUS, DOCSTEP, DTNO, DEPTNM, DOCSIGNPATH, UPDATEDATE, INSERTDATE, DELETEFLAG)
+        VALUES (#{doctitle}, #{userno}, #{doccontents}, 1, 1, #{dtno}, #{deptnm}, #{docsignpath}, NOW(), NOW(), 'N')
     </insert>
     
-    <update id="updateSign" parameterType="gu.sign.SignVO">
+    <update id="updateSignDoc" parameterType="gu.sign.SignDocVO">
         UPDATE SGN_DOC
-           SET DOCTITLE=#{doctitle}, DOCCONTENTS=#{doccontents}
+           SET DOCTITLE=#{doctitle}, DOCCONTENTS=#{doccontents}, DOCSIGNPATH=#{docsignpath}
              , UPDATEDATE=NOW()
          WHERE DOCNO=#{docno} 
     </update> 
-        
-    <select id="selectSignOne" parameterType="gu.sign.SignVO" resultType="gu.sign.SignVO">
+    
+    <delete id="deleteSign" parameterType="String">
+        DELETE 
+          FROM SGN_SIGN
+         WHERE DOCNO=#{docno} 
+    </delete>     
+    <insert id="insertSign" parameterType="gu.sign.SignVO" >
+        INSERT INTO SGN_SIGN(DOCNO, SSSTEP, SSTYPE, RECEIVEDATE, USERNO, USERPOS)
+        VALUES (#{docno}, #{ssstep}, 0, NOW(), #{userno}, #{userpos})
+    </insert>
+            
+    <select id="selectSignDocOne" parameterType="gu.sign.SignDocVO" resultType="gu.sign.SignDocVO">
         SELECT DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCCONTENTS, DOCSTATUS, DOCSTEP, DTNO, DEPTNM
              , DATE_FORMAT(UPDATEDATE,'%Y-%m-%d') UPDATEDATE
           FROM SGN_DOC SD
@@ -52,7 +62,7 @@
          WHERE SD.DELETEFLAG='N' AND DOCNO=#{docno}
     </select> 
     
-    <delete id="deleteSign" parameterType="gu.sign.SignVO">
+    <delete id="deleteSignDoc" parameterType="gu.sign.SignDocVO">
         UPDATE SGN_DOC
            SET DELETEFLAG='Y'
          WHERE DOCNO=#{docno} 

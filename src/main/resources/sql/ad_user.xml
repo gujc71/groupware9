@@ -11,9 +11,10 @@
     </select> 
     
     <select id="selectUserListWithDept" parameterType="gu.common.SearchVO" resultType="gu.member.UserVO">
-        SELECT USERNO, USERID, USERNM, USERPW, PHOTO, CU.DEPTNO, DEPTNM
+        SELECT USERNO, USERID, USERNM, USERPW, PHOTO, CU.DEPTNO, DEPTNM, CC.CODENM USERPOS
           FROM COM_USER CU
          INNER JOIN COM_DEPT CD ON CD.DEPTNO=CU.DEPTNO
+         INNER JOIN COM_CODE CC ON CC.CODECD=CU.USERPOS AND CLASSNO='3'
          WHERE CU.DELETEFLAG='N' AND CD.DELETEFLAG='N'
            <if test="searchExt1!=null and searchExt1!=''">
                AND CU.DEPTNO=#{searchExt1} 

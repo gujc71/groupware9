@@ -19,7 +19,7 @@
 			<c:forEach var="listview" items="${listview}" varStatus="status">	
 				<tr>
 					<td><c:out value="${status.index+1}"/></td>
-					<td><a href="javascript:fn_addUser(<c:out value="${listview.userno}"/>, '<c:out value="${listview.usernm}"/>', '<c:out value="${listview.deptnm}"/>')"><c:out value="${listview.usernm}"/></a></td>
+					<td><a href="javascript:fn_addUser(<c:out value="${listview.userno}"/>, '<c:out value="${listview.usernm}"/>', '<c:out value="${listview.deptnm}"/>', '<c:out value="${listview.userpos}"/>')"><c:out value="${listview.usernm}"/></a></td>
 					<td><c:out value="${listview.deptnm}"/></td>
 				</tr>
 			</c:forEach>

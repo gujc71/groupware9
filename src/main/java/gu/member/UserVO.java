@@ -9,6 +9,7 @@ public class UserVO {
     private String usernm;
     private String photo;
     private String userrole;
+    private String userpos;
     private String ip;
     private String deptno;
     private String deptnm;
@@ -66,7 +67,15 @@ public class UserVO {
         this.userrole = userrole;
     }
 
-    public String getIp() {
+    public String getUserpos() {
+		return userpos;
+	}
+
+	public void setUserpos(String userpos) {
+		this.userpos = userpos;
+	}
+
+	public String getIp() {
         return ip;
     }
 

@@ -55,9 +55,8 @@ function fn_signPath(){
         type: "post"        
     }).success(function(result){
                 $("#popupUsers").html(result);
-                set_Users($("#usernos").val()); 
-        }            
-    );
+                set_Users($("#docsignpath").val()); 
+    });
     $("#popupUsers").modal("show");
 }
 function deptTreeInUsersActivate(node) {
@@ -69,17 +68,31 @@ function deptTreeInUsersActivate(node) {
         data: { deptno : node.data.key }        
     }).success(function(result){
                 $("#userlist4Users").html(result);
-        }            
-    );
+    });
 }
 
-function fn_selectUsers(usernos) {
-    $("#usernos").val(usernos);
+function fn_selectUsers(docsignpath) {
+    $("#docsignpath").val(docsignpath);
     $("#popupUsers").modal("hide");
+    
+    var signPath = $("#signPath");
+    signPath.empty();
+     
+	var typearr = ["기안", "합의", "결재"];
+	var nos = docsignpath.split("||"); 
+	for (var i in nos) {
+		if (nos[i]==="") continue;
+		var arr = nos[i].split(",");	// 사번, 이름, 기안/합의/결제, 직책 
+	    var signArea = $("<div class='signArea'>");
+	    signPath.append(signArea);
+	    var signAreaTop = $("<div class='signAreaTop'>" + arr[3] + "</div>").appendTo(signArea);
+	    var signAreaTop = $("<div class='signAreaCenter'>").appendTo(signArea);
+	    var signAreaTop = $("<div class='signAreaBottom'>" + arr[1] +"</div>").appendTo(signArea);
+	}
 }
 
 </script>
-    
+   
 </head>
 
 <body>
@@ -101,8 +114,6 @@ function fn_selectUsers(usernos) {
                 <div class="col-lg-12">
 			        <button class="btn btn-outline btn-primary pull-right" onclick="fn_formSubmit()">결재상신</button>
 			        <button class="btn btn-outline btn-primary pull-right" onclick="fn_signPath()">결재경로</button>
-			        
-				    <input type="text" name="usernos" id="usernos">
 			    </div>
 			</div>
             <div class="row" style="margin-top: 10px">
@@ -119,25 +130,26 @@ function fn_selectUsers(usernos) {
             	<form id="form1" name="form1" role="form" action="signSave" method="post" >
             		<input type="hidden" name="docno" value="<c:out value="${signInfo.docno}"/>">
             		<input type="hidden" name="dtno" value="<c:out value="${signInfo.dtno}"/>">
+				    <input type="hidden" name="docsignpath" id="docsignpath"  value="<c:out value="${signInfo.docsignpath}"/>">
 					<div class="panel panel-default">
 	                    <div class="panel-body">
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">제목</label>
-	                            <div class="col-lg-8">
-	                            	<input type="text" class="form-control" id="doctitle" name="doctitle" maxlength="255" 
+	                            <div class="col-lg-11">
+	                            	<input type="text" class="form-control" id="doctitle" name="doctitle" maxlength="50" 
 	                            	value="<c:out value="${signInfo.doctitle}"/>">
 	                            </div>
 	                        </div>
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">내용</label>
-	                            <div class="col-lg-8">
+	                            <div class="col-lg-11">
 	                            	<textarea class="form-control" id="doccontents" name="doccontents"><c:out value="${signInfo.doccontents}"/></textarea>
 	                            </div>
 	                        </div>
 	                    </div>
 	                </div>
 				</form>	
-            </div>
+            </div> 
             <!-- /.row -->
         </div> 
         <!-- /#page-wrapper -->

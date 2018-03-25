@@ -41,8 +41,8 @@ public class SignCtr {
     	
         // 
         searchVO.setUserno(userno);
-        searchVO.pageCalculate( signSvc.selectSignCount(searchVO) ); // startRow, endRow
-        List<?> listview  = signSvc.selectSignList(searchVO);
+        searchVO.pageCalculate( signSvc.selectSignDocCount(searchVO) ); // startRow, endRow
+        List<?> listview  = signSvc.selectSignDocList(searchVO);
         
         modelMap.addAttribute("searchVO", searchVO);
         modelMap.addAttribute("listview", listview);
@@ -62,8 +62,8 @@ public class SignCtr {
     	
         // 
         searchVO.setUserno(userno);
-        searchVO.pageCalculate( signSvc.selectSignCount(searchVO) ); // startRow, endRow
-        List<?> listview  = signSvc.selectSignList(searchVO);
+        searchVO.pageCalculate( signSvc.selectSignDocCount(searchVO) ); // startRow, endRow
+        List<?> listview  = signSvc.selectSignDocList(searchVO);
         
         modelMap.addAttribute("searchVO", searchVO);
         modelMap.addAttribute("listview", listview);
@@ -89,7 +89,7 @@ public class SignCtr {
     }
     
     @RequestMapping(value = "/signForm")
-    public String signForm(HttpServletRequest request, SignVO signInfo, ModelMap modelMap) {
+    public String signForm(HttpServletRequest request, SignDocVO signInfo, ModelMap modelMap) {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
@@ -97,7 +97,7 @@ public class SignCtr {
     	
         // 개별 작업
         if (signInfo.getDocno() != null) {
-            signInfo = signSvc.selectSignOne(signInfo);
+            signInfo = signSvc.selectSignDocOne(signInfo);
         } else {
         	SignDocTypeVO docType = signDocSvc.selectSignDocTypeOne(signInfo.getDtno());
         	signInfo.setDtno(docType.getDtno());
@@ -112,11 +112,11 @@ public class SignCtr {
      * 저장.
      */
     @RequestMapping(value = "/signSave")
-    public String signSave(HttpServletRequest request, SignVO signInfo, ModelMap modelMap) {
+    public String signSave(HttpServletRequest request, SignDocVO signInfo, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
     	signInfo.setUserno(userno);
     	
-        signSvc.insertSign(signInfo);
+        signSvc.insertSignDoc(signInfo);
 
         return "redirect:/signListTobe";
     }
@@ -125,7 +125,7 @@ public class SignCtr {
      * 읽기.
      */
     @RequestMapping(value = "/signRead")
-    public String signRead(HttpServletRequest request, SignVO signVO, ModelMap modelMap) {
+    public String signRead(HttpServletRequest request, SignDocVO SignDocVO, ModelMap modelMap) {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
@@ -133,7 +133,7 @@ public class SignCtr {
     	
         // 개별 작업
         
-        SignVO signInfo = signSvc.selectSignOne(signVO);
+        SignDocVO signInfo = signSvc.selectSignDocOne(SignDocVO);
 
         modelMap.addAttribute("signInfo", signInfo);
         
@@ -144,9 +144,9 @@ public class SignCtr {
      * 삭제.
      */
     @RequestMapping(value = "/signDelete")
-    public String signDelete(HttpServletRequest request, SignVO signVO) {
+    public String signDelete(HttpServletRequest request, SignDocVO SignDocVO) {
 
-        signSvc.deleteSign(signVO);
+        signSvc.deleteSignDoc(SignDocVO);
         
         return "redirect:/signList";
     }

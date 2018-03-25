@@ -1,6 +1,5 @@
 package gu.sign;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -29,47 +28,62 @@ public class SignSvc {
     /**
      * 리스트.
      */
-    public Integer selectSignCount(SearchVO param) {
-        return sqlSession.selectOne("selectSignCount", param);
+    public Integer selectSignDocCount(SearchVO param) {
+        return sqlSession.selectOne("selectSignDocCount", param);
     }
     
-    public List<?> selectSignList(SearchVO param) {
-        return sqlSession.selectList("selectSignList", param);
+    public List<?> selectSignDocList(SearchVO param) {
+        return sqlSession.selectList("selectSignDocList", param);
     }
     
     /**
      * 저장.
      */
-    public void insertSign(SignVO param) {
+    public void insertSignDoc(SignDocVO param) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status = txManager.getTransaction(def);
         
         try {
             if (param.getDocno()==null || "".equals(param.getDocno())) {
-                sqlSession.insert("insertSign", param);
+                sqlSession.insert("insertSignDoc", param);
             } else {
-                sqlSession.update("updateSign", param);
+                sqlSession.update("updateSignDoc", param);
             }
+            
+            sqlSession.delete("deleteSign", param.getDocno());
+        	String docsignpath = param.getDocsignpath();
+        	String[] users = docsignpath.split("\\|\\|");
+        	for (int i=0; i<users.length; i++) { 
+        		if ("".equals(users[i])) continue;
+        		String[] arr = users[i].split(","); // 사번, 이름, 기안/합의/결제, 직책
+        		SignVO param2 = new SignVO();
+        		param2.setSsstep(Integer.toString(i));
+        		param2.setDocno(param.getDocno());
+        		param2.setUserno(arr[0]);
+        		param2.setUserpos(arr[3]);
+                sqlSession.insert("insertSign", param2);
+        	}
+        	
             txManager.commit(status);
         } catch (TransactionException ex) {
             txManager.rollback(status);
-            LOGGER.error("insertSign");
+            LOGGER.error("insertSignDoc");
         }            
     }
 
     /**
      * 읽기.
      */
-    public SignVO selectSignOne(SignVO param) {
-        return sqlSession.selectOne("selectSignOne", param);
+    public SignDocVO selectSignDocOne(SignDocVO param) {
+        return sqlSession.selectOne("selectSignDocOne", param);
     }
 
     /**
      * 삭제.
      */
-    public void deleteSign(SignVO param) {
-        sqlSession.update("deleteSign", param);
+    public void deleteSignDoc(SignDocVO param) {
+        sqlSession.update("deleteSignDoc", param);
     }
 
 }
