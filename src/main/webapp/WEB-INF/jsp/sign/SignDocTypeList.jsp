@@ -62,21 +62,21 @@ function fn_formSubmit(){
 					
 					<br/>
 					<c:forEach var="listview" items="${listview}" varStatus="status">
-						<c:url var="link" value="signForm">
+						<c:url var="link" value="signDocForm">
 							<c:param name="dtno" value="${listview.dtno}" />
 						</c:url>
 					
 						<a href="${link}">
-				            <div class="panel panel-default" style="width: 200px; height: 300px; display:inline-block; overflow:hidden; "> 
+				            <div class="panel panel-default" style="width: 150px; height: 200px; display:inline-block; overflow:hidden; "> 
 				            	<div class="panel-heading"><c:out value="${listview.dttitle}"/></div>
-				            	<div class="panel-body"><c:out value="${listview.dtcontents}" escapeXml="false"/></div>
+				            	<div class="panel-body"><img src="images/if_survey_49353.png" style="margin: 30px 25px;"/></div>
 							</div>
 						</a>
 					</c:forEach>
 						
             	</div>    
             </div>
-            <!-- /.row -->
+            <!-- /.row --> 
         </div>
         <!-- /#page-wrapper -->
 

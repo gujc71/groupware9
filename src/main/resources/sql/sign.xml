@@ -3,8 +3,12 @@
 
 <mapper namespace="sign">
 
+	<!-- 결재 문서 작성 -->    
     <sql id="includeSignDoc">
-        WHERE SD.DELETEFLAG='N' AND SD.USERNO=${userno}
+        INNER JOIN SGN_SIGN SS ON SS.DOCNO=SD.DOCNO AND SS.USERNO=${userno} AND SSTYPE!=0
+        <if test="searchExt1=='signed'">AND SS.SSRESULT!=0</if>        
+        <if test="searchExt1!='signed'">AND SS.SSRESULT=0 AND SS.SSSTEP=SD.DOCSTEP</if>        
+        WHERE SD.DELETEFLAG='N' -- AND SD.DOCSTATUS IN (1,2)
         <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
             <foreach item="item" index="index" collection="searchTypeArr" separator=" OR " open="AND (" close=")">
                  ${item} LIKE CONCAT('%', #{searchKeyword},'%' )
@@ -15,11 +19,11 @@
     <select id="selectSignDocCount" resultType="Integer" parameterType="gu.common.SearchVO">
         SELECT COUNT(*)
           FROM SGN_DOC SD
-         <include refid="includeSignDoc"/>
+         <include refid="includeSignDoc"/> 
     </select> 
     
     <select id="selectSignDocList" resultType="gu.sign.SignDocVO" parameterType="gu.common.SearchVO">
-        SELECT DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCSTEP, SD.DTNO, SDT.DTTITLE, DEPTNM
+        SELECT SD.DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCSTEP, SD.DTNO, SDT.DTTITLE, DEPTNM
         	 , DATE_FORMAT(UPDATEDATE,'%Y-%m-%d') UPDATEDATE, CODENM DOCSTATUS
           FROM SGN_DOC SD
          INNER JOIN COM_USER CU ON SD.USERNO=CU.USERNO
@@ -32,6 +36,35 @@
          </if>
     </select> 
         
+   <sql id="includeSignDocTobe">
+        WHERE SD.DELETEFLAG='N' AND SD.USERNO=${userno}
+        <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+            <foreach item="item" index="index" collection="searchTypeArr" separator=" OR " open="AND (" close=")">
+                 ${item} LIKE CONCAT('%', #{searchKeyword},'%' )
+            </foreach>
+        </if>               
+    </sql>
+
+    <select id="selectSignDocTobeCount" resultType="Integer" parameterType="gu.common.SearchVO">
+        SELECT COUNT(*)
+          FROM SGN_DOC SD
+         <include refid="includeSignDocTobe"/>
+    </select> 
+    
+    <select id="selectSignDocTobeList" resultType="gu.sign.SignDocVO" parameterType="gu.common.SearchVO">
+        SELECT SD.DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCSTEP, SD.DTNO, SDT.DTTITLE, DEPTNM
+        	 , DATE_FORMAT(UPDATEDATE,'%Y-%m-%d') UPDATEDATE, CODENM DOCSTATUS
+          FROM SGN_DOC SD
+         INNER JOIN COM_USER CU ON SD.USERNO=CU.USERNO
+         INNER JOIN SGN_DOCTYPE SDT ON SDT.DTNO=SD.DTNO
+         INNER JOIN COM_CODE CC ON CC.CODECD=SD.DOCSTATUS AND CLASSNO='2'
+         <include refid="includeSignDocTobe"/>
+         ORDER BY DOCNO DESC
+         <if test="rowStart != null">
+             LIMIT ${rowStart-1}, 10
+         </if>
+    </select> 
+            
     <insert id="insertSignDoc" parameterType="gu.sign.SignDocVO"  useGeneratedKeys="true" keyProperty="docno">
         INSERT INTO SGN_DOC(DOCTITLE, USERNO, DOCCONTENTS, DOCSTATUS, DOCSTEP, DTNO, DEPTNM, DOCSIGNPATH, UPDATEDATE, INSERTDATE, DELETEFLAG)
         VALUES (#{doctitle}, #{userno}, #{doccontents}, 1, 1, #{dtno}, #{deptnm}, #{docsignpath}, NOW(), NOW(), 'N')
@@ -48,25 +81,80 @@
         DELETE 
           FROM SGN_SIGN
          WHERE DOCNO=#{docno} 
-    </delete>     
+    </delete>
+         
     <insert id="insertSign" parameterType="gu.sign.SignVO" >
-        INSERT INTO SGN_SIGN(DOCNO, SSSTEP, SSTYPE, RECEIVEDATE, USERNO, USERPOS)
-        VALUES (#{docno}, #{ssstep}, 0, NOW(), #{userno}, #{userpos})
+        INSERT INTO SGN_SIGN(DOCNO, SSSTEP, SSTYPE, SSRESULT, RECEIVEDATE, USERNO, USERPOS)
+        VALUES (#{docno}, #{ssstep}, #{sstype}, #{ssresult}, NOW(), #{userno}, #{userpos})
     </insert>
-            
+
     <select id="selectSignDocOne" parameterType="gu.sign.SignDocVO" resultType="gu.sign.SignDocVO">
         SELECT DOCNO, DOCTITLE, SD.USERNO, USERNM, DOCCONTENTS, DOCSTATUS, DOCSTEP, DTNO, DEPTNM
-             , DATE_FORMAT(UPDATEDATE,'%Y-%m-%d') UPDATEDATE
+             , DATE_FORMAT(UPDATEDATE,'%Y-%m-%d') UPDATEDATE, DOCSIGNPATH
           FROM SGN_DOC SD
          INNER JOIN COM_USER CU ON SD.USERNO=CU.USERNO
          WHERE SD.DELETEFLAG='N' AND DOCNO=#{docno}
     </select> 
     
-    <delete id="deleteSignDoc" parameterType="gu.sign.SignDocVO">
+    <select id="selectCurrentSigner" parameterType="String" resultType="String">
+		SELECT SS.USERNO
+          FROM SGN_DOC SD
+         INNER JOIN SGN_SIGN SS ON SS.DOCNO=SD.DOCNO AND SS.SSSTEP=SD.DOCSTEP 
+        WHERE SD.DOCNO=#{docno} AND SD.DOCSTATUS IN (1,2)
+	</select>
+	            
+    <update id="deleteSignDoc" parameterType="gu.sign.SignDocVO">
         UPDATE SGN_DOC
            SET DELETEFLAG='Y'
          WHERE DOCNO=#{docno} 
-    </delete> 
+    </update> 
 
+    <select id="selectSign" parameterType="String" resultType="gu.sign.SignVO">
+        SELECT SSNO, DOCNO, SSSTEP, SSTYPE, SSRESULT, SD.USERNO, USERNM, SD.USERPOS, SIGNDATE, SSCOMMENT
+          FROM SGN_SIGN SD
+         INNER JOIN COM_USER CU ON SD.USERNO=CU.USERNO
+         WHERE DOCNO=#{docno}
+         ORDER BY SSSTEP
+    </select>
+    
+	<select id="selectSignLast" parameterType="gu.sign.SignDocVO" resultType="gu.sign.SignVO">
+        SELECT SSNO, DOCNO, SSSTEP, SSTYPE, 0 SSRESULT, SD.USERNO, USERNM, CD.CODENM USERPOS
+          FROM SGN_SIGN SD
+         INNER JOIN COM_USER CU ON SD.USERNO=CU.USERNO
+         INNER JOIN COM_CODE CD ON CLASSNO='3' AND CD.CODECD=CU.USERPOS
+         WHERE DOCNO=(SELECT DOCNO FROM SGN_DOC WHERE USERNO=#{userno} AND DTNO=#{dtno} ORDER BY DOCNO DESC LIMIT 1)
+         ORDER BY SSSTEP
+    </select>
+  
+	<!-- 결재 -->    
+    <update id="updateSign" parameterType="gu.sign.SignVO" >  
+        UPDATE SGN_SIGN SS 
+         INNER JOIN SGN_DOC SD ON SD.DOCNO=SS.DOCNO AND SD.DOCSTEP=SS.SSSTEP
+           SET SSRESULT=#{ssresult}, SIGNDATE=NOW(), SSCOMMENT=#{sscomment}
+         WHERE SS.DOCNO=#{docno} 
+    </update>
+
+	<select id="selectChkRemainSign" parameterType="gu.sign.SignVO" resultType="String">
+        SELECT SSSTEP
+          FROM SGN_SIGN SD
+         WHERE DOCNO=#{docno} AND SSRESULT=0
+         LIMIT 1
+    </select>
+
+    <update id="updateSignDoc4Sign" parameterType="gu.sign.SignVO">
+        UPDATE SGN_DOC
+           SET DOCSTEP = DOCSTEP + 1
+         WHERE DOCNO=#{docno} 
+    </update> 
+
+    <update id="updateSignDocStatus" parameterType="gu.sign.SignVO">
+        UPDATE SGN_DOC
+           SET DOCSTATUS = #{ssresult}
+			<if test="ssstep != null">
+	        	, DOCSTEP = DOCSTEP + 1
+	        </if>
+         WHERE DOCNO=#{docno} 
+    </update> 
+      
 </mapper>
 

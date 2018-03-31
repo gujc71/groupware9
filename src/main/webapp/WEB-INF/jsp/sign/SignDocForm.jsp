@@ -43,8 +43,8 @@ window.onload =function() {
 function fn_formSubmit(){
 	CKEDITOR.instances["doccontents"].updateElement();
 
-	if ( ! chkInputValue("#doctitle", "<s:message code="crud.crtitle"/>")) return false;
-	if ( ! chkInputValue("#doccontents", "<s:message code="crud.crmemo"/>")) return false;
+	if ( ! chkInputValue("#doctitle", "제목")) return false;
+	if ( ! chkInputValue("#doccontents", "내용")) return false;
 	
 	$("#form1").submit();
 } 
@@ -76,7 +76,10 @@ function fn_selectUsers(docsignpath) {
     $("#popupUsers").modal("hide");
     
     var signPath = $("#signPath");
+    var signPath4Agree = $("#signPath4Agree");
+    
     signPath.empty();
+    signPath4Agree.empty();
      
 	var typearr = ["기안", "합의", "결재"];
 	var nos = docsignpath.split("||"); 
@@ -84,7 +87,9 @@ function fn_selectUsers(docsignpath) {
 		if (nos[i]==="") continue;
 		var arr = nos[i].split(",");	// 사번, 이름, 기안/합의/결제, 직책 
 	    var signArea = $("<div class='signArea'>");
-	    signPath.append(signArea);
+		if (arr[2]==="1")
+			signPath4Agree.append(signArea);
+		else signPath.append(signArea);
 	    var signAreaTop = $("<div class='signAreaTop'>" + arr[3] + "</div>").appendTo(signArea);
 	    var signAreaTop = $("<div class='signAreaCenter'>").appendTo(signArea);
 	    var signAreaTop = $("<div class='signAreaBottom'>" + arr[1] +"</div>").appendTo(signArea);
@@ -116,34 +121,73 @@ function fn_selectUsers(docsignpath) {
 			        <button class="btn btn-outline btn-primary pull-right" onclick="fn_signPath()">결재경로</button>
 			    </div>
 			</div>
+			
+			<c:set value="0" var="cnt"/>
+			
             <div class="row" style="margin-top: 10px">
 				<div id="signPath" class="signPath">
-					<div class="signArea">
-						<div class="signAreaTop">기안</div>
-						<div class="signAreaCenter"> &nbsp; </div>
-						<div class="signAreaBottom">구자철 </div>
-					</div>				
+					<c:forEach var="signlist" items="${signlist}" varStatus="status">
+					    <c:if test="${signlist.sstype ne '1'}">					
+							<div class="signArea">
+								<div class="signAreaTop"><c:out value="${signlist.userpos}"/></div>
+								<div class="signAreaCenter">
+									<c:choose>
+							        	<c:when test='${signlist.ssresult == "1"}'>승인</c:when>
+							        	<c:when test='${signlist.ssresult == "2"}'>반려</c:when>
+							         	<c:otherwise></c:otherwise>
+							      </c:choose>								
+								</div>
+								<div class="signAreaBottom"><c:out value="${signlist.usernm}"/> </div>
+							</div>
+						</c:if>
+					    <c:if test="${signlist.sstype eq '1'}">
+							<c:set var="cnt" value="${cnt + 1}" />		
+						</c:if>
+					</c:forEach>				
 				</div>
 				<div class="signTitle"><br>결<br><br>재</div>
-			</div>			            
+			</div>
+		    <c:if test="${cnt>0}"> 
+	            <div class="row" style="margin-top: 10px">
+					<div id="signPath4Agree" class="signPath">
+						<c:forEach var="signlist" items="${signlist}" varStatus="status">
+						    <c:if test="${signlist.sstype eq '1'}">					
+								<div class="signArea">
+									<div class="signAreaTop"><c:out value="${signlist.userpos}"/></div>
+									<div class="signAreaCenter">
+										<c:choose>
+								        	<c:when test='${signlist.ssresult == "1"}'>결재</c:when>
+								        	<c:when test='${signlist.ssresult == "2"}'>반려</c:when>
+								         	<c:otherwise></c:otherwise>
+								      </c:choose>								
+									</div>
+									<div class="signAreaBottom"><c:out value="${signlist.usernm}"/> </div>
+								</div>
+							</c:if>
+						</c:forEach>				
+					</div>
+					<div class="signTitle"><br>합<br><br>의</div>
+				</div>
+			</c:if>
+						
             <div class="row" style="margin-top: 10px">
-            	<form id="form1" name="form1" role="form" action="signSave" method="post" >
-            		<input type="hidden" name="docno" value="<c:out value="${signInfo.docno}"/>">
-            		<input type="hidden" name="dtno" value="<c:out value="${signInfo.dtno}"/>">
-				    <input type="hidden" name="docsignpath" id="docsignpath"  value="<c:out value="${signInfo.docsignpath}"/>">
+            	<form id="form1" name="form1" role="form" action="signDocSave" method="post" >
+            		<input type="hidden" name="docno" value="<c:out value="${signDocInfo.docno}"/>">
+            		<input type="hidden" name="dtno" value="<c:out value="${signDocInfo.dtno}"/>">
+				    <input type="hidden" name="docsignpath" id="docsignpath"  value="<c:out value="${signDocInfo.docsignpath}"/>">
 					<div class="panel panel-default">
 	                    <div class="panel-body">
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">제목</label>
 	                            <div class="col-lg-11">
 	                            	<input type="text" class="form-control" id="doctitle" name="doctitle" maxlength="50" 
-	                            	value="<c:out value="${signInfo.doctitle}"/>">
+	                            	value="<c:out value="${signDocInfo.doctitle}"/>">
 	                            </div>
 	                        </div>
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">내용</label>
 	                            <div class="col-lg-11">
-	                            	<textarea class="form-control" id="doccontents" name="doccontents"><c:out value="${signInfo.doccontents}"/></textarea>
+	                            	<textarea class="form-control" id="doccontents" name="doccontents"><c:out value="${signDocInfo.doccontents}"/></textarea>
 	                            </div>
 	                        </div>
 	                    </div>

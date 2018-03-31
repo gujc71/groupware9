@@ -45,16 +45,26 @@ function fn_formSubmit(){
 
 		<jsp:include page="../common/navigation.jsp" />
 		
+		<form role="form" id="form1" name="form1"  method="post">
+		
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><i class="fa fa-edit fa-fw"></i> <s:message code="crud.title"/></h1>
+                    <h1 class="page-header"><i class="fa fa-edit fa-fw"></i> 결제  할(한) 문서</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+				 	<label><input name="searchExt1" id="searchExt1" type="radio" value="sign" onclick="fn_formSubmit()" <c:if test='${searchVO.searchExt1=="sign"}'>checked</c:if>> 결제할 문서</label>
+				 	<label><input name="searchExt1" id="searchExt1" type="radio" value="signed" onclick="fn_formSubmit()" <c:if test='${searchVO.searchExt1=="signed"}'>checked</c:if>> 결제한 문서</label>
+                </div>
+                <!-- /.col-lg-12 --> 
+            </div>
             
             <!-- /.row -->
-            <div class="panel panel-default"> 
+            <div class="panel panel-default guStyle2"> 
             	<div class="panel-body">
 					<div class="listHead">
 						<div class="listHiddenField pull-left field60"><s:message code="board.no"/></div>
@@ -71,7 +81,7 @@ function fn_formSubmit(){
 					</c:if>
 					
 					<c:forEach var="listview" items="${listview}" varStatus="status">
-						<c:url var="link" value="signRead">
+						<c:url var="link" value="signDocRead">
 							<c:param name="docno" value="${listview.docno}" />
 						</c:url>
 					
@@ -88,18 +98,17 @@ function fn_formSubmit(){
 					</c:forEach>	
 					
 					<br/>
-					<form role="form" id="form1" name="form1"  method="post">
 					    <jsp:include page="../common/pagingforSubmit.jsp" />
 				    
 						<div class="form-group">
 							<div class="checkbox col-lg-3 pull-left">
 							 	<label class="pull-right">
 							 		<input type="checkbox" name="searchType" value="doctitle" <c:if test="${fn:indexOf(searchVO.searchType, 'doctitle')!=-1}">checked="checked"</c:if>/>
-		                        	<s:message code="crud.crtitle"/>
+		                        	제목
 		                        </label>
 							 	<label class="pull-right">
 							 		<input type="checkbox" name="searchType" value="doccontents" <c:if test="${fn:indexOf(searchVO.searchType, 'doccontents')!=-1}">checked="checked"</c:if>/>
-		                        	<s:message code="crud.crmemo"/>
+		                        	내용
 		                        </label>
 		                   </div>
 		                   <div class="input-group custom-search-form col-lg-3">
@@ -112,11 +121,11 @@ function fn_formSubmit(){
 	                            </span>
 	                       </div>
 						</div>
-					</form>	
             	</div>    
             </div>
             <!-- /.row -->
         </div>
+        </form>	
         <!-- /#page-wrapper -->
 
     </div>

@@ -11,7 +11,8 @@ public class SignVO {
 					receivedate,
 					signdate,
 					userno,
-					userpos;	// 직윈
+					usernm,
+					userpos;	// 직위
 
 	public String getSsno() {
 		return ssno;
@@ -83,6 +84,14 @@ public class SignVO {
 
 	public void setUserno(String userno) {
 		this.userno = userno;
+	}
+
+	public String getUsernm() {
+		return usernm;
+	}
+
+	public void setUsernm(String usernm) {
+		this.usernm = usernm;
 	}
 
 	public String getUserpos() {

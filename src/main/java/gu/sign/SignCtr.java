@@ -30,7 +30,7 @@ public class SignCtr {
     static final Logger LOGGER = LoggerFactory.getLogger(SignCtr.class);
     
     /**
-     * 결제 할 문서 리스트.
+     * 결제 받을 문서 리스트.
      */
     @RequestMapping(value = "/signListTobe")
     public String signListTobe(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap) {
@@ -41,13 +41,13 @@ public class SignCtr {
     	
         // 
         searchVO.setUserno(userno);
-        searchVO.pageCalculate( signSvc.selectSignDocCount(searchVO) ); // startRow, endRow
-        List<?> listview  = signSvc.selectSignDocList(searchVO);
+        searchVO.pageCalculate( signSvc.selectSignDocTobeCount(searchVO) ); // startRow, endRow
+        List<?> listview  = signSvc.selectSignDocTobeList(searchVO);
         
         modelMap.addAttribute("searchVO", searchVO);
         modelMap.addAttribute("listview", listview);
         
-        return "sign/SignList";
+        return "sign/SignDocListTobe";
     }
 
     /**
@@ -60,7 +60,8 @@ public class SignCtr {
         
         etcSvc.setCommonAttribute(userno, modelMap);
     	
-        // 
+        //
+        if (searchVO.getSearchExt1()==null || "".equals(searchVO.getSearchExt1())) searchVO.setSearchExt1("sign");
         searchVO.setUserno(userno);
         searchVO.pageCalculate( signSvc.selectSignDocCount(searchVO) ); // startRow, endRow
         List<?> listview  = signSvc.selectSignDocList(searchVO);
@@ -68,7 +69,7 @@ public class SignCtr {
         modelMap.addAttribute("searchVO", searchVO);
         modelMap.addAttribute("listview", listview);
         
-        return "sign/SignList";
+        return "sign/SignDocList";
     }
     
     /** 
@@ -88,35 +89,47 @@ public class SignCtr {
         return "sign/SignDocTypeList";
     }
     
-    @RequestMapping(value = "/signForm")
-    public String signForm(HttpServletRequest request, SignDocVO signInfo, ModelMap modelMap) {
+    @RequestMapping(value = "/signDocForm")
+    public String signDocForm(HttpServletRequest request, SignDocVO signDocInfo, ModelMap modelMap) {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
         etcSvc.setCommonAttribute(userno, modelMap);
     	
         // 개별 작업
-        if (signInfo.getDocno() != null) {
-            signInfo = signSvc.selectSignDocOne(signInfo);
-        } else {
-        	SignDocTypeVO docType = signDocSvc.selectSignDocTypeOne(signInfo.getDtno());
-        	signInfo.setDtno(docType.getDtno());
-        	signInfo.setDoccontents(docType.getDtcontents());
+        List<?> signlist = null;
+        if (signDocInfo.getDocno() == null) {	// 신규
+        	SignDocTypeVO docType = signDocSvc.selectSignDocTypeOne(signDocInfo.getDtno());
+        	signDocInfo.setDtno(docType.getDtno());
+        	signDocInfo.setDoccontents(docType.getDtcontents());
+        	signDocInfo.setUserno(userno);
+        	// 사번, 이름, 기안/합의/결제, 직책
+            signlist = signSvc.selectSignLast(signDocInfo);
+            String signPath = "";
+            for (int i=0; i<signlist.size();i++){
+            	SignVO svo = (SignVO) signlist.get(i);
+            	signPath += svo.getUserno() + "," + svo.getUsernm() + "," + svo.getSstype() + "," + svo.getUserpos() + "||";  
+            }
+            signDocInfo.setDocsignpath(signPath);
+        } else {								// 수정
+            signDocInfo = signSvc.selectSignDocOne(signDocInfo);
+            signlist = signSvc.selectSign(signDocInfo.getDocno());
         }
-        modelMap.addAttribute("signInfo", signInfo);
+        modelMap.addAttribute("signDocInfo", signDocInfo);
+        modelMap.addAttribute("signlist", signlist);
         
-        return "sign/SignForm";
+        return "sign/SignDocForm";
     }
     
     /**
      * 저장.
      */
-    @RequestMapping(value = "/signSave")
-    public String signSave(HttpServletRequest request, SignDocVO signInfo, ModelMap modelMap) {
+    @RequestMapping(value = "/signDocSave")
+    public String signDocSave(HttpServletRequest request, SignDocVO signDocInfo, ModelMap modelMap) {
         String userno = request.getSession().getAttribute("userno").toString();
-    	signInfo.setUserno(userno);
+    	signDocInfo.setUserno(userno);
     	
-        signSvc.insertSignDoc(signInfo);
+        signSvc.insertSignDoc(signDocInfo);
 
         return "redirect:/signListTobe";
     }
@@ -124,8 +137,8 @@ public class SignCtr {
     /**
      * 읽기.
      */
-    @RequestMapping(value = "/signRead")
-    public String signRead(HttpServletRequest request, SignDocVO SignDocVO, ModelMap modelMap) {
+    @RequestMapping(value = "/signDocRead")
+    public String signDocRead(HttpServletRequest request, SignDocVO SignDocVO, ModelMap modelMap) {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
@@ -133,22 +146,37 @@ public class SignCtr {
     	
         // 개별 작업
         
-        SignDocVO signInfo = signSvc.selectSignDocOne(SignDocVO);
-
-        modelMap.addAttribute("signInfo", signInfo);
+        SignDocVO signDocInfo = signSvc.selectSignDocOne(SignDocVO);
+        List<? >signlist = signSvc.selectSign(signDocInfo.getDocno());
+        String signer = signSvc.selectCurrentSigner(SignDocVO.getDocno());
         
-        return "sign/SignRead";
+        modelMap.addAttribute("signDocInfo", signDocInfo);
+        modelMap.addAttribute("signlist", signlist);
+        modelMap.addAttribute("signer", signer);
+        
+        return "sign/SignDocRead";
     }
     
     /**
      * 삭제.
      */
-    @RequestMapping(value = "/signDelete")
-    public String signDelete(HttpServletRequest request, SignDocVO SignDocVO) {
+    @RequestMapping(value = "/signDocDelete")
+    public String signDocDelete(HttpServletRequest request, SignDocVO SignDocVO) {
 
         signSvc.deleteSignDoc(SignDocVO);
         
         return "redirect:/signList";
     }
-   
+
+    /**
+     * 결재.
+     */
+    @RequestMapping(value = "/signSave")
+    public String signSave(HttpServletRequest request, SignVO signInfo) {
+
+        signSvc.updateSign(signInfo);
+        
+        return "redirect:/signListTo";
+    }
+
 }

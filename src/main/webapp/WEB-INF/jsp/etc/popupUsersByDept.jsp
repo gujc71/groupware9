@@ -20,8 +20,8 @@
 				<tr>
 					<td><c:out value="${status.index+1}"/></td>
 					<td><a href="javascript:fn_selectUser(<c:out value="${listview.userno}"/>, '<c:out value="${listview.usernm}"/>')"><c:out value="${listview.usernm}"/></a></td>
-					<td><c:out value="${listview.deptnm}"/></td>
-				</tr>
+					<td><c:out value="${listview.userpos}"/></td>
+				</tr> 
 			</c:forEach>
 		</tbody>
 	</table>

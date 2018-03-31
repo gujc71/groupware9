@@ -92,10 +92,10 @@
                                     <a href="signDocTypeList">기안하기</a>
                                 </li>
                                 <li>
-		                            <a href="signListTobe">결재 받을 문서 </a>
+		                            <a href="signListTobe">결재 받을(은) 문서 </a>
                                 </li>
                                 <li>
-		                            <a href="signListTo">결재 할 문서</a>
+		                            <a href="signListTo">결재 할(한) 문서</a>
                                 </li>
 	                        </ul>                             
                         </li>                        

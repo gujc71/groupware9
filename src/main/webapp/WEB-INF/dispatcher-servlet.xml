@@ -21,6 +21,7 @@
 	       <mvc:exclude-mapping path="/memberLoginChk"/> 
 	       <mvc:exclude-mapping path="/js/**"/> 
 	       <mvc:exclude-mapping path="/css/**"/> 
+	       <mvc:exclude-mapping path="/images/**"/> 
 	       <bean class="gu.common.LoginInterceptor"/>
 	    </mvc:interceptor>
 	    <mvc:interceptor>
@@ -36,6 +37,7 @@
 	
 	<mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/css/**" location="/css/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
 	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize" value="100000000" />
