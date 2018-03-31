@@ -135,5 +135,12 @@
          INNER JOIN COM_USER CU ON CU.USERNO=TB.USERNO
          LIMIT ${rowStart-1}, 10         
      </select>
+
+    <select id="selectClassCode" parameterType="String"  resultType="gu.etc.ClassCodeVO">
+        SELECT CODECD, CODENM 
+          FROM COM_CODE 
+         WHERE CLASSNO=#{classno} -- AND DELETEFLAG='N'
+         ORDER BY CAST(CODECD AS INT)
+    </select>      
 </mapper>
 

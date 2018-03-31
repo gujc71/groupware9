@@ -100,6 +100,9 @@
 	                        </ul>                             
                         </li>                        
                         <li>
+                            <a href="schList"><i class="fa fa-calendar fa-fw"></i> 일정관리<span class="fa arrow"></span></a>
+                        </li>                        
+                        <li>
                             <a href="#"><i class="fa fa-music fa-fw"></i> 샘플<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
                                 <li>

@@ -178,5 +178,4 @@ public class Util4calen {
         
         return cal.getTime();
     }    
-    
 }

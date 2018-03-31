@@ -39,4 +39,9 @@ public class EtcSvc {
     public List<?> selectList4User(BoardSearchVO param) {
         return sqlSession.selectList("selectList4User", param);
     }
+    
+    public List<?> selectClassCode(String param) {
+        return sqlSession.selectList("selectClassCode", param);
+    }
+    
 }

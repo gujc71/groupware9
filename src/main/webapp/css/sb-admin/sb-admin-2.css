@@ -503,10 +503,47 @@ _div {border:1px solid #cccccc}
 
 
 .guStyle {
-	margin-top: 10px; 
+	margin-top: 10px;  
 	margin-left: 18px;
 }
 
 .guStyle2 {
 	margin-top: 10px; 
 }	
+
+.calendarColumnBox {
+	display: inline-block;
+    width: 14%;
+    padding: 1px;
+	min-height: 150px;
+	margin-left: -5px;
+	border: 1px solid gray;
+}
+.calendarColumnDay{
+	display: inline-block;
+	float:left;
+    width: 98%;
+	text-align:right;
+	height: 25px;
+}
+
+.calendarDay{
+	display: inline-block;
+	float:left;
+    width: 98%;
+	text-align:left;
+	height: 25px;
+}
+
+.calendarColumnHead{
+	display: inline-block;
+    width: 14%;
+    padding: 1px;
+	margin-left: -5px;
+	border: 1px solid gray;
+	margin-bottom: 5px;
+	text-align:center;
+	height: 25px;
+	background-color: #E5F5F8;
+	 font-weight: bold;
+}

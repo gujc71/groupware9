@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="schdule">
+
+    <select id="selectCalendar" resultType="gu.schedule.CalendarVO" parameterType="gu.schedule.MonthVO">
+		SELECT CDDATE, CDDD
+		  FROM COM_DATE CD
+		 WHERE CDYEAR=#{year} AND CDMM=#{month}
+		 ORDER BY CDDATE
+    </select> 
+
+    <select id="selectSchList4Calen" resultType="gu.schedule.SchDetailVO" parameterType="String">
+		SELECT SD.SSNO, SDSEQ, SSTITLE
+		  FROM SCH_DETAIL SD 
+		  LEFT OUTER JOIN SCH_SCHEDULE SS ON SS.SSNO=SD.SSNO
+		 WHERE SDDATE=#{sddate}
+    </select> 
+
+    
+    <sql id="includeSch">
+        WHERE DELETEFLAG='N'
+    </sql>
+
+    <select id="selectSchCount" resultType="Integer" parameterType="gu.common.SearchVO">
+        SELECT COUNT(*)
+          FROM SCH_SCHEDULE TC
+         <include refid="includeSch"/>
+    </select> 
+    
+    <select id="selectSchList" resultType="gu.schedule.SchVO" parameterType="gu.common.SearchVO">
+        SELECT SSTITLE, SSTYPE, SSSTARTDATE, SSSTARTHOUR, SSSTARTMINUTE, SSENDDATE, SSENDHOUR
+        	 , SSENDMINUTE, SSREPEATTYPE, SSREPEATEND, SSCONTENTS, SSISOPEN, TC.USERNO, USERNM
+          FROM SCH_SCHEDULE TC
+         INNER JOIN COM_USER CU ON TC.USERNO=CU.USERNO
+         <include refid="includeSch"/>
+         ORDER BY SSNO DESC
+         <if test="rowStart != null">
+             LIMIT ${rowStart-1}, 10
+         </if>
+    </select> 
+        
+    <insert id="insertSch" parameterType="gu.schedule.SchVO" useGeneratedKeys="true" keyProperty="ssno">
+        INSERT INTO SCH_SCHEDULE(SSTITLE, SSTYPE, SSSTARTDATE, SSSTARTHOUR, SSSTARTMINUTE, SSENDDATE, SSENDHOUR, 
+        			SSENDMINUTE, SSREPEATTYPE, SSREPEATEND, SSCONTENTS, SSISOPEN, USERNO, UPDATEDATE, INSERTDATE, DELETEFLAG)
+        VALUES (#{sstitle}, #{sstype}, #{ssstartdate}, #{ssstarthour}, #{ssstartminute}, #{ssenddate}, #{ssendhour}, 
+        		#{ssendminute}, #{ssrepeattype}, #{ssrepeatend}, #{sscontents}, #{ssisopen}, #{userno}, NOW(), NOW(), 'N')
+    </insert>
+    
+    <update id="updateSch" parameterType="gu.schedule.SchVO">
+        UPDATE SCH_SCHEDULE
+           SET SSTITLE=#{sstitle}, SSTYPE=#{sstype}, SSSTARTDATE=#{ssstartdate}, SSSTARTHOUR=#{ssstarthour}, SSSTARTMINUTE=#{ssstartminute}, SSENDDATE=#{ssenddate}
+             , SSENDHOUR=#{ssendhour}, SSENDMINUTE=#{ssendminute}, SSREPEATTYPE=#{ssrepeattype}, SSCONTENTS=#{sscontents}, SSISOPEN=#{ssisopen}, UPDATEDATE=NOW()
+         WHERE SSNO=#{ssno} 
+    </update> 
+
+    <insert id="insertSchDetail" parameterType="gu.schedule.SchDetailVO" >
+        INSERT INTO SCH_DETAIL(SSNO, SDSEQ, SDDATE, SDHOUR, SDMINUTE) 
+        		VALUES(#{ssno}, #{sdseq}, #{sddate}, #{sdhour}, #{sdminute})
+    </insert>
+     
+    <delete id="deleteSchDetail" parameterType="String">
+        DELETE
+          FROM SCH_DETAIL
+         WHERE SSNO=#{ssno} 
+    </delete>  
+                
+    <select id="selectSchOne" parameterType="gu.schedule.SchVO" resultType="gu.schedule.SchVO">
+        SELECT SSTITLE, SSTYPE, SSSTARTDATE, SSSTARTHOUR, SSSTARTMINUTE, SSENDDATE, SSENDHOUR 
+        	 , SSENDMINUTE, SSREPEATTYPE, SSREPEATEND, SSCONTENTS, SSISOPEN, TC.USERNO, USERNM
+          FROM SCH_SCHEDULE TC
+         INNER JOIN COM_USER CU ON TC.USERNO=CU.USERNO
+         WHERE TC.DELETEFLAG='N' AND SSNO=#{ssno}
+    </select> 
+    
+    <delete id="deleteSch" parameterType="gu.schedule.SchVO">
+        UPDATE SCH_SCHEDULE
+           SET DELETEFLAG='Y'
+         WHERE SSNO=#{ssno} 
+    </delete>  
+</mapper>
+
