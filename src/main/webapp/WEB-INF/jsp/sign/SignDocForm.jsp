@@ -48,6 +48,16 @@ function fn_formSubmit(){
 	
 	$("#form1").submit();
 } 
+
+function fn_tempSubmit(){
+	CKEDITOR.instances["doccontents"].updateElement();
+
+	if ( ! chkInputValue("#doctitle", "제목")) return false;
+	
+	$("#docstatus").val("0");
+	$("#form1").submit();
+} 
+
 // 결재 경로
 function fn_signPath(){
     $.ajax({
@@ -116,9 +126,15 @@ function fn_selectUsers(docsignpath) {
             
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-12">
-			        <button class="btn btn-outline btn-primary pull-right" onclick="fn_formSubmit()">결재상신</button>
-			        <button class="btn btn-outline btn-primary pull-right" onclick="fn_signPath()">결재경로</button>
+                <div class="col-lg-9"></div>
+                <div class="col-lg-1">
+			        <button class="btn btn-outline btn-primary" onclick="fn_tempSubmit()">임시저장</button>
+			    </div>
+                <div class="col-lg-1">
+			        <button class="btn btn-outline btn-primary" onclick="fn_formTSubmit()">결재상신</button>
+			    </div>
+                <div class="col-lg-1">
+			        <button class="btn btn-outline btn-primary" onclick="fn_signPath()">결재경로</button>
 			    </div>
 			</div>
 			
@@ -173,6 +189,7 @@ function fn_selectUsers(docsignpath) {
             <div class="row" style="margin-top: 10px">
             	<form id="form1" name="form1" role="form" action="signDocSave" method="post" >
             		<input type="hidden" name="docno" value="<c:out value="${signDocInfo.docno}"/>">
+            		<input type="hidden" name="docstatus" id="docstatus"  value="<c:out value="${signDocInfo.docstatus}"/>">
             		<input type="hidden" name="dtno" value="<c:out value="${signDocInfo.dtno}"/>">
 				    <input type="hidden" name="docsignpath" id="docsignpath"  value="<c:out value="${signDocInfo.docsignpath}"/>">
 					<div class="panel panel-default">

@@ -38,6 +38,11 @@
         
    <sql id="includeSignDocTobe">
         WHERE SD.DELETEFLAG='N' AND SD.USERNO=${userno}
+        <if test="searchExt1!=''">
+	        <if test="searchExt1==2">AND SD.DOCSTATUS IN (1,2)</if>        
+	        <if test="searchExt1!=2">AND SD.DOCSTATUS=${searchExt1}</if>        
+        </if>        
+        
         <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
             <foreach item="item" index="index" collection="searchTypeArr" separator=" OR " open="AND (" close=")">
                  ${item} LIKE CONCAT('%', #{searchKeyword},'%' )
@@ -67,7 +72,7 @@
             
     <insert id="insertSignDoc" parameterType="gu.sign.SignDocVO"  useGeneratedKeys="true" keyProperty="docno">
         INSERT INTO SGN_DOC(DOCTITLE, USERNO, DOCCONTENTS, DOCSTATUS, DOCSTEP, DTNO, DEPTNM, DOCSIGNPATH, UPDATEDATE, INSERTDATE, DELETEFLAG)
-        VALUES (#{doctitle}, #{userno}, #{doccontents}, 1, 1, #{dtno}, #{deptnm}, #{docsignpath}, NOW(), NOW(), 'N')
+        VALUES (#{doctitle}, #{userno}, #{doccontents}, #{docstatus}, 1, #{dtno}, #{deptnm}, #{docsignpath}, NOW(), NOW(), 'N')
     </insert>
     
     <update id="updateSignDoc" parameterType="gu.sign.SignDocVO">
@@ -141,12 +146,6 @@
          LIMIT 1
     </select>
 
-    <update id="updateSignDoc4Sign" parameterType="gu.sign.SignVO">
-        UPDATE SGN_DOC
-           SET DOCSTEP = DOCSTEP + 1
-         WHERE DOCNO=#{docno} 
-    </update> 
-
     <update id="updateSignDocStatus" parameterType="gu.sign.SignVO">
         UPDATE SGN_DOC
            SET DOCSTATUS = #{ssresult}
@@ -155,6 +154,12 @@
 	        </if>
          WHERE DOCNO=#{docno} 
     </update> 
+
+    <update id="updateSignDocCancel" parameterType="String">
+        UPDATE SGN_DOC
+           SET DOCSTATUS = 0
+         WHERE DOCNO=#{docno} 
+    </update> 
       
-</mapper>
+</mapper> 
 

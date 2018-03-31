@@ -46,21 +46,18 @@ function fn_formSubmit(){
 		<jsp:include page="../common/navigation.jsp" />
 		
 		<form role="form" id="form1" name="form1"  method="post">
-		
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header"><i class="fa fa-edit fa-fw"></i> 결제  할(한) 문서</h1>
                 </div>
-                <!-- /.col-lg-12 -->
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-				 	<label><input name="searchExt1" id="searchExt1" type="radio" value="sign" onclick="fn_formSubmit()" <c:if test='${searchVO.searchExt1=="sign"}'>checked</c:if>> 결제할 문서</label>
-				 	<label><input name="searchExt1" id="searchExt1" type="radio" value="signed" onclick="fn_formSubmit()" <c:if test='${searchVO.searchExt1=="signed"}'>checked</c:if>> 결제한 문서</label>
+				 	<label><input name="searchExt1" id="searchExt1" type="radio" value="sign" onclick="fn_formSubmit()" <c:if test='${searchVO.searchExt1=="sign"}'>checked</c:if>> 진행중</label>
+				 	<label><input name="searchExt1" id="searchExt1" type="radio" value="signed" onclick="fn_formSubmit()" <c:if test='${searchVO.searchExt1=="signed"}'>checked</c:if>> 완료</label>
                 </div>
-                <!-- /.col-lg-12 --> 
             </div>
             
             <!-- /.row -->

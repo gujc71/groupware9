@@ -150,4 +150,8 @@ public class SignSvc {
             LOGGER.error("updateSign");
         }            
     }
+    
+    public void updateSignDocCancel(String param) {
+        sqlSession.update("updateSignDocCancel", param);
+    }
 }

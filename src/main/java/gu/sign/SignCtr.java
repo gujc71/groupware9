@@ -99,6 +99,7 @@ public class SignCtr {
         // 개별 작업
         List<?> signlist = null;
         if (signDocInfo.getDocno() == null) {	// 신규
+        	signDocInfo.setDocstatus("1");
         	SignDocTypeVO docType = signDocSvc.selectSignDocTypeOne(signDocInfo.getDtno());
         	signDocInfo.setDtno(docType.getDtno());
         	signDocInfo.setDoccontents(docType.getDtcontents());
@@ -178,5 +179,13 @@ public class SignCtr {
         
         return "redirect:/signListTo";
     }
-
+    /**
+     * 회수.
+     */
+    @RequestMapping(value = "/signDocCancel")
+    public String signDocCancel(HttpServletRequest request, String docno) {
+        signSvc.updateSignDocCancel(docno);
+        
+        return "redirect:/signListTobe";
+    }
 }
