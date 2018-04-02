@@ -45,7 +45,7 @@ public class SchCtr {
         }
         Integer dayofweek = Util4calen.getDayOfWeek( Util4calen.str2Date(searchVO.getYear() + "-" + searchVO.getMonth()+"-01"));
         
-        List<?> listview  = schSvc.selectCalendar(searchVO);
+        List<?> listview  = schSvc.selectCalendar(searchVO, userno);
         
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
@@ -77,7 +77,9 @@ public class SchCtr {
         		cddate = Util4calen.date2Str(Util4calen.getToday());
         	}
     		schInfo.setSsstartdate(cddate);
+    		schInfo.setSsstarthour("09");
     		schInfo.setSsenddate(cddate);
+    		schInfo.setSsendhour("18");
         }
         modelMap.addAttribute("schInfo", schInfo);
         
@@ -103,16 +105,26 @@ public class SchCtr {
     /**
      * 읽기.
      */
+    @RequestMapping(value = "/schRead4Ajax")
+    public String schRead4Ajax(HttpServletRequest request, SchVO schVO, ModelMap modelMap) {
+        SchVO schInfo = schSvc.selectSchOne4Read(schVO);
+
+        modelMap.addAttribute("schInfo", schInfo);
+        
+        return "schedule/SchRead4Ajax";
+    }
+    /**
+     * 읽기.
+     */
     @RequestMapping(value = "/schRead")
     public String schRead(HttpServletRequest request, SchVO schVO, ModelMap modelMap) {
         // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
         
         etcSvc.setCommonAttribute(userno, modelMap);
-    	
         // 
         
-        SchVO schInfo = schSvc.selectSchOne(schVO);
+        SchVO schInfo = schSvc.selectSchOne4Read(schVO);
 
         modelMap.addAttribute("schInfo", schInfo);
         

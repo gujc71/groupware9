@@ -516,6 +516,7 @@ _div {border:1px solid #cccccc}
     width: 14%;
     padding: 1px;
 	min-height: 150px;
+	height: 100%;
 	margin-left: -5px;
 	border: 1px solid gray;
 }
@@ -533,6 +534,9 @@ _div {border:1px solid #cccccc}
     width: 98%;
 	text-align:left;
 	height: 25px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .calendarColumnHead{
@@ -545,5 +549,14 @@ _div {border:1px solid #cccccc}
 	text-align:center;
 	height: 25px;
 	background-color: #E5F5F8;
-	 font-weight: bold;
+	font-weight: bold;
+}
+
+.calendarTooltip{ 
+	display: none;
+	position: absolute; 
+	border-radius: .4em; 
+	_border: 1px solid;
+	width: 400px;
+	font-size: 11px;
 }

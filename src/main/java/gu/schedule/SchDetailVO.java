@@ -6,6 +6,7 @@ public class SchDetailVO {
 				    sddate,		 //날짜
 				    sdhour,		 //시간
 				    sdminute,	 //분
+				    userno,
 				    sstitle				// 일정명
     ;
     private Integer sdseq;		 //순번
@@ -44,6 +45,14 @@ public class SchDetailVO {
 
 	public void setSddate(String sddate) {
 		this.sddate = sddate;
+	}
+
+	public String getUserno() {
+		return userno;
+	}
+
+	public void setUserno(String userno) {
+		this.userno = userno;
 	}
 
 	public String getSstitle() {

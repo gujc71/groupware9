@@ -100,7 +100,7 @@
 	                        </ul>                             
                         </li>                        
                         <li>
-                            <a href="schList"><i class="fa fa-calendar fa-fw"></i> 일정관리<span class="fa arrow"></span></a>
+                            <a href="schList"><i class="fa fa-calendar fa-fw"></i> 일정관리</a>
                         </li>                        
                         <li>
                             <a href="#"><i class="fa fa-music fa-fw"></i> 샘플<span class="fa arrow"></span></a>
@@ -111,7 +111,7 @@
                                 <li>
 		                            <a href="sample2">샘플 2: 날짜 선택 </a>
                                 </li>
-                                <li>
+                                <li> 
 		                            <a href="sample3">샘플 3: 챠트</a>
                                 </li>
                                 <li>

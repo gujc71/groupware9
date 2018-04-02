@@ -10,11 +10,20 @@
 		 ORDER BY CDDATE
     </select> 
 
-    <select id="selectSchList4Calen" resultType="gu.schedule.SchDetailVO" parameterType="String">
-		SELECT SD.SSNO, SDSEQ, SSTITLE
-		  FROM SCH_DETAIL SD 
-		  LEFT OUTER JOIN SCH_SCHEDULE SS ON SS.SSNO=SD.SSNO
-		 WHERE SDDATE=#{sddate}
+    <select id="selectSchList4Calen" resultType="gu.schedule.SchDetailVO" parameterType="gu.common.Field3VO">
+		SELECT SSNO, SDSEQ, SSTITLE, USERNO, SDHOUR, SDMINUTE
+		  FROM (
+				SELECT SD.SSNO, SDSEQ, SSTITLE, USERNO, SD.SDHOUR, SD.SDMINUTE
+				  FROM SCH_DETAIL SD 
+				  LEFT OUTER JOIN SCH_SCHEDULE SS ON SS.SSNO=SD.SSNO 
+				 WHERE SDDATE=#{field2} AND SS.DELETEFLAG='N' AND SS.SSISOPEN='Y'
+				 UNION ALL
+				SELECT SD.SSNO, SDSEQ, SSTITLE, USERNO, SD.SDHOUR, SD.SDMINUTE
+				  FROM SCH_DETAIL SD 
+				  LEFT OUTER JOIN SCH_SCHEDULE SS ON SS.SSNO=SD.SSNO 
+				 WHERE SDDATE=#{field2} AND SS.DELETEFLAG='N' AND SS.SSISOPEN='N' AND USERNO=#{field1}
+		 )DS
+         ORDER BY SDHOUR, SDMINUTE, SSNO
     </select> 
 
     
@@ -42,15 +51,16 @@
         
     <insert id="insertSch" parameterType="gu.schedule.SchVO" useGeneratedKeys="true" keyProperty="ssno">
         INSERT INTO SCH_SCHEDULE(SSTITLE, SSTYPE, SSSTARTDATE, SSSTARTHOUR, SSSTARTMINUTE, SSENDDATE, SSENDHOUR, 
-        			SSENDMINUTE, SSREPEATTYPE, SSREPEATEND, SSCONTENTS, SSISOPEN, USERNO, UPDATEDATE, INSERTDATE, DELETEFLAG)
+        			SSENDMINUTE, SSREPEATTYPE, SSREPEATOPTION, SSREPEATEND, SSCONTENTS, SSISOPEN, USERNO, UPDATEDATE, INSERTDATE, DELETEFLAG)
         VALUES (#{sstitle}, #{sstype}, #{ssstartdate}, #{ssstarthour}, #{ssstartminute}, #{ssenddate}, #{ssendhour}, 
-        		#{ssendminute}, #{ssrepeattype}, #{ssrepeatend}, #{sscontents}, #{ssisopen}, #{userno}, NOW(), NOW(), 'N')
+        		#{ssendminute}, #{ssrepeattype}, #{ssrepeatoption}, #{ssrepeatend}, #{sscontents}, #{ssisopen}, #{userno}, NOW(), NOW(), 'N')
     </insert>
     
     <update id="updateSch" parameterType="gu.schedule.SchVO">
         UPDATE SCH_SCHEDULE
            SET SSTITLE=#{sstitle}, SSTYPE=#{sstype}, SSSTARTDATE=#{ssstartdate}, SSSTARTHOUR=#{ssstarthour}, SSSTARTMINUTE=#{ssstartminute}, SSENDDATE=#{ssenddate}
-             , SSENDHOUR=#{ssendhour}, SSENDMINUTE=#{ssendminute}, SSREPEATTYPE=#{ssrepeattype}, SSCONTENTS=#{sscontents}, SSISOPEN=#{ssisopen}, UPDATEDATE=NOW()
+             , SSENDHOUR=#{ssendhour}, SSENDMINUTE=#{ssendminute}, SSREPEATTYPE=#{ssrepeattype}, SSREPEATOPTION=#{ssrepeatoption}, SSREPEATEND=#{ssrepeatend}
+             , SSCONTENTS=#{sscontents}, SSISOPEN=#{ssisopen}, UPDATEDATE=NOW()
          WHERE SSNO=#{ssno} 
     </update> 
 
@@ -66,12 +76,23 @@
     </delete>  
                 
     <select id="selectSchOne" parameterType="gu.schedule.SchVO" resultType="gu.schedule.SchVO">
-        SELECT SSTITLE, SSTYPE, SSSTARTDATE, SSSTARTHOUR, SSSTARTMINUTE, SSENDDATE, SSENDHOUR 
-        	 , SSENDMINUTE, SSREPEATTYPE, SSREPEATEND, SSCONTENTS, SSISOPEN, TC.USERNO, USERNM
+        SELECT SSNO, SSTITLE, SSTYPE, SSSTARTDATE, SSSTARTHOUR, SSSTARTMINUTE, SSENDDATE, SSENDHOUR 
+        	 , SSENDMINUTE, SSREPEATTYPE, SSREPEATOPTION, SSREPEATEND, SSCONTENTS, SSISOPEN, TC.USERNO, USERNM
           FROM SCH_SCHEDULE TC
          INNER JOIN COM_USER CU ON TC.USERNO=CU.USERNO
          WHERE TC.DELETEFLAG='N' AND SSNO=#{ssno}
-    </select> 
+    </select>  
+
+    <select id="selectSchOne4Read" parameterType="gu.schedule.SchVO" resultType="gu.schedule.SchVO">
+        SELECT SSNO, SSTITLE, CC1.CODENM SSTYPE, SSSTARTDATE, SSSTARTHOUR, SSSTARTMINUTE, SSENDDATE, SSENDHOUR 
+        	 , SSENDMINUTE, CC2.CODENM SSREPEATTYPE, SSREPEATEND, SSCONTENTS, CC3.CODENM SSISOPEN, TC.USERNO, USERNM
+          FROM SCH_SCHEDULE TC
+         INNER JOIN COM_USER CU ON TC.USERNO=CU.USERNO
+         INNER JOIN COM_CODE CC1 ON CC1.CODECD=TC.SSTYPE AND CC1.CLASSNO=4
+         INNER JOIN COM_CODE CC2 ON CC2.CODECD=TC.SSREPEATTYPE AND CC2.CLASSNO=5
+         INNER JOIN COM_CODE CC3 ON CC3.CODECD=TC.SSISOPEN AND CC3.CLASSNO=6
+         WHERE TC.DELETEFLAG='N' AND SSNO=#{ssno}
+    </select>  
     
     <delete id="deleteSch" parameterType="gu.schedule.SchVO">
         UPDATE SCH_SCHEDULE

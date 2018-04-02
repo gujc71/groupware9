@@ -12,6 +12,7 @@ public class SchVO {
 				    ssendhour,			//종료일-시간
 				    ssendminute,		//종료일-분
 				    ssrepeattype,		//반복
+				    ssrepeatoption,		//반복 옵션- 주
 				    ssrepeatend,		//반복종료
 				    sscontents,			//내용
 				    ssisopen,			//공개여부
@@ -128,5 +129,13 @@ public class SchVO {
 
 	public void setUserno(String userno) {
 		this.userno = userno;
+	}
+
+	public String getSsrepeatoption() {
+		return ssrepeatoption;
+	}
+
+	public void setSsrepeatoption(String ssrepeatoption) {
+		this.ssrepeatoption = ssrepeatoption;
 	}    
 }

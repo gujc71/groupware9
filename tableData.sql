@@ -23,6 +23,26 @@ INSERT INTO `com_code` (`CLASSNO`, `CODECD`, `CODENM`) VALUES
 	(3, '11', '사장'),
 	(3, '12', '부회장'),
 	(3, '13', '회장');
+
+
+INSERT INTO `com_code` (`CLASSNO`, `CODECD`, `CODENM`) VALUES
+	(4, '1', '업무'),
+	(4, '2', '회의'),
+	(4, '3', '외근'),
+	(4, '4', '출장'),
+	(4, '5', '교육'),
+	(4, '6', '휴가'),
+	(4, '7', '기타');
+
+INSERT INTO `com_code` (`CLASSNO`, `CODECD`, `CODENM`) VALUES
+	(5, '1', '반복없음'),
+	(5, '2', '주단위'),
+	(5, '3', '월단위');
+
+
+INSERT INTO `com_code` (`CLASSNO`, `CODECD`, `CODENM`) VALUES
+	(6, 'Y', '공개'),
+	(6, 'N', '비공개');
     
 ALTER TABLE COM_USER ADD (USERPOS VARCHAR(2)		 NULL  COMMENT '직위');
 

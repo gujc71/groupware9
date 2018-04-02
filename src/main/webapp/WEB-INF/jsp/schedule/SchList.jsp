@@ -36,6 +36,26 @@
 function fn_formSubmit(){
 	document.form1.submit();	
 }
+
+var oldno = null;
+function calendarDayMouseover(event, ssno){
+	$(".calendarTooltip").css({left: event.x+"px", top: event.y+"px"});
+	$(".calendarTooltip").show();
+	if (oldno===ssno) return;
+	oldno=ssno;
+    $.ajax({
+    	url: "schRead4Ajax",
+    	cache: false,
+    	data: { ssno : ssno },
+	    success: function(result){
+	    	$(".calendarTooltip").html(result);
+		}    
+    });	
+}
+
+function calendarDayMouseout(){
+	$(".calendarTooltip").hide();
+}
 </script>
     
 </head>
@@ -69,40 +89,47 @@ function fn_formSubmit(){
 		     </div>
             
             <!-- /.row -->
-            <div class="panel panel-default"> 
-            	<div class="panel-body">
-					
-					<div class="col-lg-12" id="weekDiv">
-						<c:forTokens var="item" items="일,월,화,수,목,금,토" delims=",">
-			             	<div class="calendarColumnHead">${item}</div>
-						</c:forTokens>
-						<c:forEach begin="1" end="${dayofweek}">
-				             <div class="calendarColumnBox">
-				             	<div class="calendarColumnDay">
-				             	</div>
-				             </div>
-					 	</c:forEach>					
-						<c:forEach var="listview" items="${listview}" varStatus="status">
-				             <div class="calendarColumnBox">
-				             	<div class="calendarColumnDay">
-				             		<a href="schForm?cddate=<c:out value="${listview.cddate}"/>"><c:out value="${listview.cddd}"/></a>
-				             	</div>
-								<c:forEach var="items" items="${listview.list}" varStatus="status">
-					             	<div class="calendarDay">
+			<div class="row">
+				<div class="col-lg-12" id="weekDiv">
+					<c:forTokens var="item" items="일,월,화,수,목,금,토" delims=",">
+		             	<div class="calendarColumnHead">${item}</div>
+					</c:forTokens>
+				</div> 
+			</div>
+			<div class="row">
+				<div class="col-lg-12" id="weekDiv" style="height: 200px;">
+					<c:forEach begin="1" end="${dayofweek}">
+			             <div class="calendarColumnBox">
+			             	<div class="calendarColumnDay">
+			             	</div>
+			             </div>
+				 	</c:forEach>					
+					<c:forEach var="listview" items="${listview}" varStatus="status">
+			             <div class="calendarColumnBox">
+			             	<div class="calendarColumnDay">
+			             		<a href="schForm?cddate=<c:out value="${listview.cddate}"/>"><c:out value="${listview.cddd}"/></a>
+			             	</div>
+							<c:forEach var="items" items="${listview.list}" varStatus="status">
+				             	<div class="calendarDay" onmouseover="calendarDayMouseover(event, '<c:out value="${items.ssno}"/>')" onmouseout="calendarDayMouseout()">
+					             	<c:if test='${items.userno==sessionScope.userno}'> 
 					             		<a href="schForm?ssno=<c:out value="${items.ssno}"/>&sdseq=<c:out value="${items.sdseq}"/>"><c:out value="${items.sstitle}"/></a>
-					             	</div>
-					             </c:forEach>
-				             </div>
-						</c:forEach>	
-				     </div>					 
-            	</div>    
-            </div>
+				             		</c:if>
+					             	<c:if test='${items.userno!=sessionScope.userno}'> 
+					             		<a href="schRead?ssno=<c:out value="${items.ssno}"/>&sdseq=<c:out value="${items.sdseq}"/>"><c:out value="${items.sstitle}"/></a>
+				             		</c:if>
+				             	</div>
+				             </c:forEach>
+			             </div>
+					</c:forEach>	
+			     </div> 
+		     </div>					 
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
+    <div class="calendarTooltip"></</div>
 </body>
 
 </html>

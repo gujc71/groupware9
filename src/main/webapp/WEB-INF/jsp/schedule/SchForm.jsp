@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
@@ -45,14 +46,57 @@ window.onload = function() {
             $('#ssenddate').datepicker('hide');
         }
     });
+    $('#ssrepeatend').datepicker().on('changeDate', function(ev) {
+        if (ev.viewMode=="days"){
+            $('#ssrepeatend').datepicker('hide');
+        }
+    });
+    ssrepeattypeChange();
+    <c:if test='${ssrepeatoption ne ""}'>
+    	$("#ssrepeatoption").val('<c:out value="${schInfo.ssrepeatoption}"/>');
+    </c:if> 
 }
 
 function fn_formSubmit(){
 	if ( ! chkInputValue("#sstitle", "일정명")) return false;
-	if ( ! chkInputValue("#crmemo", "내용")) return false;
+	if ( ! chkInputValue("#sscontents", "내용")) return false;
+	
+	if (!confirm("저장 하시겠습니까?")) return;
 	
 	$("#form1").submit();
 } 
+
+function fn_delete(){
+	if (!confirm("삭제 하시겠습니까?")) return;
+	
+	$("#form1").attr("action", "schDelete");
+	$("#form1").submit();
+}
+
+function ssrepeattypeChange(){
+	$("#ssrepeatoption").hide();
+	$("#ssrepeatend").hide();
+	if ($("#ssrepeattype").val()==="1") return;
+	 
+	$("#ssrepeatoption").show();
+	$("#ssrepeatend").show(); 
+	
+	if ($("#ssrepeatend").val()==="")	$("#ssrepeatend").val($("#ssenddate").val()); 
+	$("#ssrepeatoption").empty();
+	if ($("#ssrepeattype").val()==="2") {
+		var week = ["일", "월", "화", "수", "목", "금", "토"];
+		for (var i=0; i<week.length; i++) {
+			$('<option value="'+ i +'">' + week[i] + '</option>').appendTo($("#ssrepeatoption"));
+		}
+	} else 
+	if ($("#ssrepeattype").val()==="3") {
+		for (var i=1; i<=31; i++) {
+			var str = "0" + String(i);
+			str = str.substring(str.length-2);
+			$('<option value="'+ str +'">' + str + '</option>').appendTo($("#ssrepeatoption"));
+		} 
+	}  
+}
 </script>
     
 </head>
@@ -63,17 +107,17 @@ function fn_formSubmit(){
 
 		<jsp:include page="../common/navigation.jsp" />
 		
-        <div id="page-wrapper">
+        <div id="page-wrapper"> 
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><i class="fa fa-gear fa-fw"></i> <s:message code="crud.title"/></h1>
+                    <h1 class="page-header"><i class="fa fa-gear fa-fw"></i> 일정관리</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             
             <!-- /.row -->
             <div class="row">
-            	<form id="form1" name="form1" role="form" action="schSave" method="post" onsubmit="return fn_formSubmit();" >
+            	<form id="form1" name="form1" role="form" action="schSave" method="post" >
             		<input type="hidden" name="ssno" value="<c:out value="${schInfo.ssno}"/>">
 					<div class="panel panel-default">
 	                    <div class="panel-body">
@@ -101,44 +145,55 @@ function fn_formSubmit(){
 	                            <div class="col-lg-1">
 		                           	<select id="ssstarthour" name="ssstarthour" class="form-control">
 										<c:forEach var="item" begin="1" end="24">
-			                           		<option value="${item}" <c:if test='${item==schInfo.ssstarthour}'>selected</c:if>>${item}</option>
+											<c:set var="sshour" value="0${item}"/>
+											<c:set var="sshour" value="${fn:substring(sshour, fn:length(sshour)-2, 3)}"/>
+			                           		<option value="${sshour}" <c:if test='${sshour==schInfo.ssstarthour}'>selected</c:if>>${sshour}</option>
 									 	</c:forEach>
-									</select>						
-								 </div>
+									</select>						 
+								 </div>  
 	                            <div class="col-lg-1">
 		                           	<select id="ssstartminute" name="ssstartminute" class="form-control">
-										<c:forEach var="item" begin="00" end="50" step="10">
+										<c:forTokens var="item" items="00,10,20,30,40,50" delims=",">
 			                           		<option value="${item}" <c:if test='${item==schInfo.ssstartminute}'>selected</c:if>>${item}</option>
-									 	</c:forEach>
+									 	</c:forTokens>
 									</select>						
 								 </div>		            
 	                             <div class="col-lg-2">
-	                            	<input class="form-control" size="16" id="ssenddate" name="ssenddate" value="<c:out value="${schInfo.ssstartdate}"/>" readonly>
+	                            	<input class="form-control" size="16" id="ssenddate" name="ssenddate" value="<c:out value="${schInfo.ssenddate}"/>" readonly>
 	                             </div> 
 	                            <div class="col-lg-1">
 		                           	<select id="ssendhour" name="ssendhour" class="form-control">
 										<c:forEach var="item" begin="1" end="24">
-			                           		<option value="${item}" <c:if test='${item==schInfo.ssendhour}'>selected</c:if>>${item}</option>
+											<c:set var="sshour" value="0${item}"/>
+											<c:set var="sshour" value="${fn:substring(sshour, fn:length(sshour)-2, 3)}"/>
+			                           		<option value="${sshour}" <c:if test='${sshour==schInfo.ssendhour}'>selected</c:if>>${sshour}</option>
 									 	</c:forEach>
 									</select>						
 								 </div>
 	                            <div class="col-lg-1">
 		                           	<select id="ssendminute" name="ssendminute" class="form-control">
-										<c:forEach var="item" begin="00" end="50" step="10">
+										<c:forTokens var="item" items="00,10,20,30,40,50" delims=",">
 			                           		<option value="${item}" <c:if test='${item==schInfo.ssendminute}'>selected</c:if>>${item}</option>
-									 	</c:forEach>
+									 	</c:forTokens>
 									</select>						
 								 </div>		                            
 	                        </div>
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">반복</label>
 	                            <div class="col-lg-2">
-		                           	<select id="ssrepeattype" name="ssrepeattype" class="form-control">
+		                           	<select id="ssrepeattype" name="ssrepeattype" class="form-control" onchange="ssrepeattypeChange()">
 		                           		<option value="1" <c:if test='${schInfo.ssrepeattype==1}'>selected</c:if>>반복없음</option>
 		                           		<option value="2" <c:if test='${schInfo.ssrepeattype==2}'>selected</c:if>>주간반복</option>
 		                           		<option value="3" <c:if test='${schInfo.ssrepeattype==3}'>selected</c:if>>월간반복</option>
 									</select>						
 	                            </div> 
+	                            <div class="col-lg-1">
+		                           	<select id="ssrepeatoption" name="ssrepeatoption" class="form-control" style="display:none">
+									</select>						
+	                            </div> 
+	                            <div class="col-lg-2">
+	                            	<input class="form-control" size="16" id="ssrepeatend" name="ssrepeatend" value="<c:out value="${schInfo.ssrepeatend}"/>"  style="display:none" readonly>
+	                            </div>
 	                        </div>
 	                    	<div class="row form-group">
 	                            <label class="col-lg-1">공개</label>
@@ -150,16 +205,18 @@ function fn_formSubmit(){
 	                            </div>
 	                        </div> 
 	                    	<div class="row form-group">
-	                            <label class="col-lg-1"><s:message code="crud.crmemo"/></label>
+	                            <label class="col-lg-1">내용</label>
 	                            <div class="col-lg-8">
 	                            	<textarea class="form-control" id="sscontents" name="sscontents"><c:out value="${schInfo.sscontents}"/></textarea>
 	                            </div> 
 	                        </div>
 	                    </div>
 	                </div>
-			        <button class="btn btn-outline btn-primary"><s:message code="common.btnSave"/></button>
 				</form>	
-                
+		        <button class="btn btn-outline btn-primary" onclick="fn_formSubmit()"><s:message code="common.btnSave"/></button>
+		        <c:if test='${schInfo.ssno!=null}'>
+	            	<button class="btn btn-outline btn-primary" onclick="fn_delete()" ><s:message code="common.btnDelete"/></button>
+	            </c:if>
             </div>
             <!-- /.row -->
         </div> 

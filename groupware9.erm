@@ -12,7 +12,7 @@
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
 	<x>0</x>
-	<y>156</y>
+	<y>198</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2018-03-24 13:48:41</creation_date>
-			<updated_date>2018-03-31 17:15:53</updated_date>
+			<updated_date>2018-04-02 22:52:12</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -1054,7 +1054,7 @@
 		</word>
 		<word>
 			<id>55</id>
-			<length>null</length>
+			<length>2</length>
 			<decimal>null</decimal>
 			<array>false</array>
 			<array_dimension>null</array_dimension>
@@ -1066,7 +1066,7 @@
 			<description></description>
 			<logical_name>반복옵션</logical_name>
 			<physical_name>SSREPEATOPTION</physical_name>
-			<type>smallint</type>
+			<type>varchar(n)</type>
 		</word>
 		<word>
 			<id>56</id>
@@ -1615,7 +1615,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>63</word_id>
+					<word_id>64</word_id>
 					<id>5</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1662,12 +1662,12 @@
 		</table>
 		<note>
 			<id>4</id>
-			<height>105</height>
+			<height>90</height>
 			<width>148</width>
 				<font_name>맑은 고딕</font_name>
 				<font_size>9</font_size>
-			<x>821</x>
-			<y>576</y>
+			<x>829</x>
+			<y>613</y>
 			<color>
 				<r>128</r>
 				<g>128</g>
@@ -1675,7 +1675,7 @@
 			</color>
 			<connections>
 			</connections>
-			<text>반복(SSREPEATETYPE)&#x0D;&#x0A;- 1: 반복없음&#x0D;&#x0A;- 2: 주단위&#x0D;&#x0A;- 3: 월단위(요일)&#x0D;&#x0A;- 4: 월단위(날짜)</text>
+			<text>반복(SSREPEATETYPE)&#x0D;&#x0A;- 1: 반복없음&#x0D;&#x0A;- 2: 주단위&#x0D;&#x0A;- 3: 월단위</text>
 		</note>
 		<table>
 			<id>5</id>
@@ -2311,7 +2311,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>9</word_id>
+					<word_id>8</word_id>
 					<id>21</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -2763,7 +2763,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>64</word_id>
+					<word_id>63</word_id>
 					<id>30</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -3318,7 +3318,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>67</word_id>
+					<word_id>66</word_id>
 					<id>44</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -3351,7 +3351,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>33</word_id>
+					<word_id>34</word_id>
 					<id>45</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -4735,7 +4735,7 @@
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
 					<physical_name></physical_name>
-					<type>smallint</type>
+					<type>varchar(n)</type>
 					<constraint></constraint>
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>
@@ -4861,7 +4861,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>66</word_id>
+					<word_id>67</word_id>
 					<id>83</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -4894,7 +4894,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>34</word_id>
+					<word_id>33</word_id>
 					<id>84</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -4961,7 +4961,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>8</word_id>
+					<word_id>9</word_id>
 					<id>86</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
