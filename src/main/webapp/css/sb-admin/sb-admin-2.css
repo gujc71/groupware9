@@ -526,8 +526,15 @@ _div {border:1px solid #cccccc}
     width: 98%;
 	text-align:right;
 	height: 25px;
+	font-weight: bold;
+	padding-right: 10px;
 }
 
+.calendarColumnSunDay,
+.calendarColumnSunDay a{
+	color: red;
+}
+	
 .calendarDay{
 	display: inline-block;
 	float:left;
@@ -537,18 +544,19 @@ _div {border:1px solid #cccccc}
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	padding-left: 2px;
 }
 
 .calendarColumnHead{
 	display: inline-block;
     width: 14%;
-    padding: 1px;
+    padding: 3px;
 	margin-left: -5px;
 	border: 1px solid gray;
-	margin-bottom: 5px;
+	margin-bottom: 5px; 
 	text-align:center;
-	height: 25px;
-	background-color: #E5F5F8;
+	height: 30px;
+	background-color: #f5f5f5;
 	font-weight: bold;
 }
 

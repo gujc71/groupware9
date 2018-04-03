@@ -2,7 +2,7 @@
 	display: inline-block;
     width: 13%;
     padding: 1px;
-    height: 200px;
+    min-height: 200px;
 }
 
 .calenSlideButton_left {

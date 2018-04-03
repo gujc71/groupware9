@@ -106,9 +106,9 @@ function calendarDayMouseout(){
 				 	</c:forEach>					
 					<c:forEach var="listview" items="${listview}" varStatus="status">
 			             <div class="calendarColumnBox">
-			             	<div class="calendarColumnDay">
+			             	<div class="calendarColumnDay <c:if test='${listview.cddayofweek=="1"}'>calendarColumnSunDay</c:if>">
 			             		<a href="schForm?cddate=<c:out value="${listview.cddate}"/>"><c:out value="${listview.cddd}"/></a>
-			             	</div>
+			             	</div> 
 							<c:forEach var="items" items="${listview.list}" varStatus="status">
 				             	<div class="calendarDay" onmouseover="calendarDayMouseover(event, '<c:out value="${items.ssno}"/>')" onmouseout="calendarDayMouseout()">
 					             	<c:if test='${items.userno==sessionScope.userno}'> 
@@ -129,7 +129,7 @@ function calendarDayMouseout(){
 
     </div>
     <!-- /#wrapper -->
-    <div class="calendarTooltip"></</div>
+    <div class="calendarTooltip"></div>
 </body>
 
 </html>

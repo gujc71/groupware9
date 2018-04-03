@@ -27,6 +27,10 @@
                      <div class="col-lg-10"><c:out value="${schInfo.ssisopen}"/></div>
                  </div> 
              	<div class="row form-group">
+                     <label class="col-lg-2">작성자</label> 
+                     <div class="col-lg-10"><c:out value="${schInfo.usernm}"/></div>
+                 </div> 
+             	<div class="row form-group">
                      <label class="col-lg-2">내용</label>
                      <div class="col-lg-10" style="max-height:100px; overflow:hidden"><c:out value="${schInfo.sscontents}"/></div> 
                  </div>

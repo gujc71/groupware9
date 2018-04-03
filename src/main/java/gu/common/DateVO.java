@@ -1,11 +1,14 @@
 package gu.common;
 
+import java.util.List;
+
 public class DateVO {
     private int year;
     private int month;
     private int day;
     private String week;
     private boolean istoday = false;
+    private List<?> list; 
     
     public int getYear() {
         return year;
@@ -46,6 +49,14 @@ public class DateVO {
     public void setIstoday(boolean istoday) {
         this.istoday = istoday;
     }
+
+	public List<?> getList() {
+		return list;
+	}
+
+	public void setList(List<?> list) {
+		this.list = list;
+	}
    
    
 }

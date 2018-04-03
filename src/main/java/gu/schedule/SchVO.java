@@ -16,7 +16,8 @@ public class SchVO {
 				    ssrepeatend,		//반복종료
 				    sscontents,			//내용
 				    ssisopen,			//공개여부
-				    userno				//사용자번호
+				    userno,				//사용자번호
+				    usernm				
     ;
 
 	public String getSsno() {
@@ -137,5 +138,13 @@ public class SchVO {
 
 	public void setSsrepeatoption(String ssrepeatoption) {
 		this.ssrepeatoption = ssrepeatoption;
+	}
+
+	public String getUsernm() {
+		return usernm;
+	}
+
+	public void setUsernm(String usernm) {
+		this.usernm = usernm;
 	}    
 }

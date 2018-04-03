@@ -67,7 +67,17 @@ function myFunction(x) {
 window.onload = function () {
 	var x = window.matchMedia("(max-width: 450px)")
 	x.addListener(myFunction) 
-	myFunction(x) 
+	myFunction(x);
+	
+	var calendars = $(".calendarColumn .panel-body");
+	var max = 0;
+	calendars.each(function() {
+		var h = parseInt($(this).css("height"));
+		if (h > max) max = h; 
+	});
+	calendars.each(function() {
+		$(this).css("height", max+"px");
+	}); 
 }
 
 function ev_prevSlide() {
@@ -99,6 +109,25 @@ function ev_nextSlide() {
 	columnSelected.first().removeClass( "columnSelected" );
 }
 
+var oldno = null;
+function calendarDayMouseover(event, ssno){
+	$(".calendarTooltip").css({left: event.x+"px", top: event.y+"px"});
+	$(".calendarTooltip").show();
+	if (oldno===ssno) return;
+	oldno=ssno;
+    $.ajax({
+    	url: "schRead4Ajax",
+    	cache: false,
+    	data: { ssno : ssno },
+	    success: function(result){
+	    	$(".calendarTooltip").html(result);
+		}    
+    });	
+}
+
+function calendarDayMouseout(){
+	$(".calendarTooltip").hide();
+}
 </script>
     
 </head>
@@ -253,6 +282,7 @@ function ev_nextSlide() {
 
     </div>
     <!-- /#wrapper -->
+    <div class="calendarTooltip"></div>
 </body>
 
 </html>

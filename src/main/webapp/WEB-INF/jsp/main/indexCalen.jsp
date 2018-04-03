@@ -18,7 +18,17 @@
                  <div class="panel <c:if test="${calenList.istoday}">panel-red</c:if> <c:if test="${!calenList.istoday}">panel-default</c:if> height100">
                      <div class="panel-heading"><c:out value="${calenList.month}"/>월 <c:out value="${calenList.day}"/>일 (<c:out value="${calenList.week}"/>)</div>
                      <div class="panel-body">
-                     </div>
+							<c:forEach var="items" items="${calenList.list}" varStatus="status">
+				             	<div class="calendarDay" onmouseover="calendarDayMouseover(event, '<c:out value="${items.ssno}"/>')" onmouseout="calendarDayMouseout()">
+					             	<c:if test='${items.userno==sessionScope.userno}'> 
+					             		<a href="schForm?ssno=<c:out value="${items.ssno}"/>&sdseq=<c:out value="${items.sdseq}"/>"><c:out value="${items.sstitle}"/></a>
+				             		</c:if>
+					             	<c:if test='${items.userno!=sessionScope.userno}'> 
+					             		<a href="schRead?ssno=<c:out value="${items.ssno}"/>&sdseq=<c:out value="${items.sdseq}"/>"><c:out value="${items.sstitle}"/></a>
+				             		</c:if>
+				             	</div>
+				             </c:forEach>                     
+                     </div> 
                  </div>
              </div>
         </c:forEach>

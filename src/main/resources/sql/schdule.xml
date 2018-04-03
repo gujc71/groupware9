@@ -4,7 +4,7 @@
 <mapper namespace="schdule">
 
     <select id="selectCalendar" resultType="gu.schedule.CalendarVO" parameterType="gu.schedule.MonthVO">
-		SELECT CDDATE, CDDD
+		SELECT CDDATE, CDDD, CDDAYOFWEEK
 		  FROM COM_DATE CD
 		 WHERE CDYEAR=#{year} AND CDMM=#{month}
 		 ORDER BY CDDATE

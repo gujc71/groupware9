@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import gu.common.DateVO;
+import gu.common.Field3VO;
 import gu.common.Util4calen;
 import gu.etc.EtcSvc;
 
@@ -33,7 +34,7 @@ public class IndexCtr {
 
         Date today = Util4calen.getToday(); 
 
-        calCalen(today, modelMap);
+        calCalen(userno, today, modelMap);
         
         
         List<?> listview = indexSvc.selectRecentNews();
@@ -53,16 +54,17 @@ public class IndexCtr {
      */
     @RequestMapping(value = "/moveDate")
     public String moveDate(HttpServletRequest request, ModelMap modelMap) {
+        String userno = request.getSession().getAttribute("userno").toString();
         String date = request.getParameter("date");
 
         Date today = Util4calen.getToday(date);
         
-        calCalen(today, modelMap);
+        calCalen(userno, today, modelMap);
         
         return "main/indexCalen";
     }
     
-    private String calCalen(Date targetDay, ModelMap modelMap) {
+    private String calCalen(String userno, Date targetDay, ModelMap modelMap) {
         List<DateVO> calenList = new ArrayList<DateVO>();
         
         Date today = Util4calen.getToday();
@@ -73,10 +75,17 @@ public class IndexCtr {
         Date lweek = Util4calen.getLastOfWeek(targetDay);
         Date preWeek = Util4calen.dateAdd(fweek, -1);
         Date nextWeek = Util4calen.dateAdd(lweek, 1);
+
+    	Field3VO fld = new Field3VO();
+    	fld.setField1(userno);
         
         while (fweek.compareTo(lweek) <= 0) {
             DateVO dvo = Util4calen.date2VO(fweek);
             dvo.setIstoday(Util4calen.dateDiff(fweek, today) == 0);
+            
+    		fld.setField2(Util4calen.date2Str(fweek));
+    		dvo.setList( indexSvc.selectSchList4Calen(fld) );
+            
             calenList.add(dvo);
             
             fweek = Util4calen.dateAdd(fweek, 1);

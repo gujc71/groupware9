@@ -5,7 +5,8 @@ import java.util.List;
 public class CalendarVO {
 
     private String  cddate;    	//  날짜
-    private Integer cddd;    	
+    private Integer cddd;
+    private Integer cddayofweek;
     private List<?> list;
     
 	public String getCddate() {
@@ -28,6 +29,14 @@ public class CalendarVO {
 		this.cddate = cddate;
 	}
 	
+	public Integer getCddayofweek() {
+		return cddayofweek;
+	}
+
+	public void setCddayofweek(Integer cddayofweek) {
+		this.cddayofweek = cddayofweek;
+	}
+
 	public void setList(List<?> list) {
 		this.list = list;
 	}
