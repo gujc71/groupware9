@@ -7,7 +7,8 @@ public class SchDetailVO {
 				    sdhour,		 //시간
 				    sdminute,	 //분
 				    userno,
-				    sstitle				// 일정명
+				    sstitle,				// 일정명
+				    fontcolor
     ;
     private Integer sdseq;		 //순번
 
@@ -65,6 +66,14 @@ public class SchDetailVO {
 
 	public void setSdhour(String sdhour) {
 		this.sdhour = sdhour;
+	}
+
+	public String getFontcolor() {
+		return fontcolor;
+	}
+
+	public void setFontcolor(String fontcolor) {
+		this.fontcolor = fontcolor;
 	}
 
 }

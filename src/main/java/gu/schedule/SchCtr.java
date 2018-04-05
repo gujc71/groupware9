@@ -106,10 +106,11 @@ public class SchCtr {
      * 읽기.
      */
     @RequestMapping(value = "/schRead4Ajax")
-    public String schRead4Ajax(HttpServletRequest request, SchVO schVO, ModelMap modelMap) {
+    public String schRead4Ajax(HttpServletRequest request, SchVO schVO, String cddate, ModelMap modelMap) {
         SchVO schInfo = schSvc.selectSchOne4Read(schVO);
 
         modelMap.addAttribute("schInfo", schInfo);
+        modelMap.addAttribute("cddate", cddate);
         
         return "schedule/SchRead4Ajax";
     }

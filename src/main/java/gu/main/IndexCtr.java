@@ -82,8 +82,9 @@ public class IndexCtr {
         while (fweek.compareTo(lweek) <= 0) {
             DateVO dvo = Util4calen.date2VO(fweek);
             dvo.setIstoday(Util4calen.dateDiff(fweek, today) == 0);
+            dvo.setDate(Util4calen.date2Str(fweek));
             
-    		fld.setField2(Util4calen.date2Str(fweek));
+    		fld.setField2(dvo.getDate());
     		dvo.setList( indexSvc.selectSchList4Calen(fld) );
             
             calenList.add(dvo);

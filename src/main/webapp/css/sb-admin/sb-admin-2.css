@@ -511,15 +511,35 @@ _div {border:1px solid #cccccc}
 	margin-top: 10px; 
 }	
 
+.calendarRow {
+	border-spacing: 1px;
+	display: table;
+	width: 100%;	
+}	
 .calendarColumnBox {
-	display: inline-block;
-    width: 14%;
+	display: table-cell;
+    width: 13%;
+    max-width: 0;
     padding: 1px;
-	min-height: 150px;
-	height: 100%;
-	margin-left: -5px;
+	min-height: 150px; 
+	height: 150px;
+	margin: 1px;
 	border: 1px solid gray;
+	vertical-align: top;
 }
+
+.calendarColumnHead{
+	display: table-cell;
+    width: 13%;
+    padding: 1px;
+	margin: 1px;
+	border: 1px solid gray;
+	text-align:center;
+	height: 30px;
+	background-color: #f5f5f5;
+	font-weight: bold;
+}
+
 .calendarColumnDay{
 	display: inline-block;
 	float:left;
@@ -542,23 +562,10 @@ _div {border:1px solid #cccccc}
 	text-align:left;
 	height: 25px;
 	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
 	padding-left: 2px;
 }
 
-.calendarColumnHead{
-	display: inline-block;
-    width: 14%;
-    padding: 3px;
-	margin-left: -5px;
-	border: 1px solid gray;
-	margin-bottom: 5px; 
-	text-align:center;
-	height: 30px;
-	background-color: #f5f5f5;
-	font-weight: bold;
-}
+
 
 .calendarTooltip{ 
 	display: none;

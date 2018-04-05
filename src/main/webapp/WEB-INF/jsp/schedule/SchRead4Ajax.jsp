@@ -14,13 +14,19 @@
                  </div>
              	<div class="row form-group">
                      <label class="col-lg-2">일시</label>
-                     <div class="col-lg-10"><c:out value="${schInfo.ssstartdate}"/> <c:out value="${schInfo.ssstarthour}"/>:<c:out value="${schInfo.ssstartminute}"/>
-                     	~ <c:out value="${schInfo.ssstartdate}"/> <c:out value="${schInfo.ssendhour}"/>:<c:out value="${schInfo.ssendminute}"/>
+                     <div class="col-lg-10">
+                     	<c:if test='${schInfo.ssrepeattype=="1"}'> 
+	                     	<c:out value="${schInfo.ssstartdate}"/> <c:out value="${schInfo.ssstarthour}"/>:<c:out value="${schInfo.ssstartminute}"/>
+	                     	~ <c:out value="${schInfo.ssstartdate}"/> <c:out value="${schInfo.ssendhour}"/>:<c:out value="${schInfo.ssendminute}"/>
+	                    </c:if>
+	                    <c:if test='${schInfo.ssrepeattype!="1"}'>
+	                    	<c:out value="${cddate}"/>
+	                    </c:if>
                       </div> 
                  </div>
              	<div class="row form-group">
                      <label class="col-lg-2">반복</label>
-                     <div class="col-lg-10"><c:out value="${schInfo.ssrepeattype}"/></div>
+                     <div class="col-lg-10"><c:out value="${schInfo.ssrepeattypenm}"/></div>
                  </div>
              	<div class="row form-group">
                      <label class="col-lg-2">공개</label>

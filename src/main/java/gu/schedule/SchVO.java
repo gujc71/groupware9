@@ -12,6 +12,7 @@ public class SchVO {
 				    ssendhour,			//종료일-시간
 				    ssendminute,		//종료일-분
 				    ssrepeattype,		//반복
+				    ssrepeattypenm,
 				    ssrepeatoption,		//반복 옵션- 주
 				    ssrepeatend,		//반복종료
 				    sscontents,			//내용
@@ -114,6 +115,14 @@ public class SchVO {
 
 	public void setSsrepeattype(String ssrepeattype) {
 		this.ssrepeattype = ssrepeattype;
+	}
+
+	public String getSsrepeattypenm() {
+		return ssrepeattypenm;
+	}
+
+	public void setSsrepeattypenm(String ssrepeattypenm) {
+		this.ssrepeattypenm = ssrepeattypenm;
 	}
 
 	public void setSsrepeatend(String ssrepeatend) {

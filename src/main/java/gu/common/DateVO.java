@@ -6,7 +6,7 @@ public class DateVO {
     private int year;
     private int month;
     private int day;
-    private String week;
+    private String date, week;
     private boolean istoday = false;
     private List<?> list; 
     
@@ -34,7 +34,15 @@ public class DateVO {
         this.day = day;
     }
     
-    public String getWeek() {
+    public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getWeek() {
         return week;
     }
     

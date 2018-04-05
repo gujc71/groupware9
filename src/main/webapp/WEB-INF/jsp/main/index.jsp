@@ -37,10 +37,11 @@ function fn_moveDate(date){
         data : {date: date},
         success: function(result){
             $("#calenDiv").html(result);
+            calcCalenderHeight();
         }
     })
 }
-
+ 
 // responsive week calendar
 function myFunction(x) {
     if (x.matches) { // max-width: 450px
@@ -69,13 +70,18 @@ window.onload = function () {
 	x.addListener(myFunction) 
 	myFunction(x);
 	
+	calcCalenderHeight();
+}
+
+function calcCalenderHeight() {
 	var calendars = $(".calendarColumn .panel-body");
 	var max = 0;
 	calendars.each(function() {
 		var h = parseInt($(this).css("height"));
 		if (h > max) max = h; 
 	});
-	calendars.each(function() {
+	if (max<180) max=180; 
+	calendars.each(function() { 
 		$(this).css("height", max+"px");
 	}); 
 }
@@ -110,7 +116,11 @@ function ev_nextSlide() {
 }
 
 var oldno = null;
-function calendarDayMouseover(event, ssno){
+function calendarDayMouseover(event, ssno, cddate){
+	if (!ssno) {
+		return;
+	}
+	
 	$(".calendarTooltip").css({left: event.x+"px", top: event.y+"px"});
 	$(".calendarTooltip").show();
 	if (oldno===ssno) return;
@@ -118,7 +128,7 @@ function calendarDayMouseover(event, ssno){
     $.ajax({
     	url: "schRead4Ajax",
     	cache: false,
-    	data: { ssno : ssno },
+    	data: { ssno : ssno, cddate:cddate },
 	    success: function(result){
 	    	$(".calendarTooltip").html(result);
 		}    

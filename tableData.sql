@@ -44,6 +44,21 @@ INSERT INTO `com_code` (`CLASSNO`, `CODECD`, `CODENM`) VALUES
 	(6, 'Y', '공개'),
 	(6, 'N', '비공개');
     
+INSERT INTO `sch_holiday` (`SHNO`, `SHTITLE`, `SHMONTH`, `SHDATE`, `SHCOLOR`, `DELETEFLAG`) VALUES
+	(1, '신정', 1, 1, 'RED', 'N'),
+	(2, '삼일절', 3, 1, 'RED', 'N'),
+	(3, '식목일', 4, 5, 'GREEN', 'N'),
+	(4, '근로자의날', 5, 1, 'GREEN', 'N'),
+	(5, '어린이날', 5, 5, 'RED', 'N'),
+	(6, '어버이날', 5, 8, 'GREEN', 'N'),
+	(7, '스승의날', 5, 15, 'GREEN', 'N'),
+	(8, '현충일', 6, 6, 'RED', 'N'),
+	(9, '제헌절', 7, 17, 'GREEN', 'N'),
+	(10, '광복절', 8, 15, 'RED', 'N'),
+	(11, '개천절', 10, 3, 'RED', 'N'),
+	(12, '한글날', 10, 9, 'RED', 'N'),
+	(13, '성탄절', 12, 25, 'RED', 'N');    
+
 ALTER TABLE COM_USER ADD (USERPOS VARCHAR(2)		 NULL  COMMENT '직위');
 
 UPDATE COM_USER SET USERPOS='01';
