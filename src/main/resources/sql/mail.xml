@@ -51,7 +51,7 @@
     <select id="selectLastMail" parameterType="String" resultType="String">
     	SELECT MAX(ENTRYDATE)
     	  FROM EML_MAIL
-    	 WHERE EMINO=#{emino}
+    	 WHERE EMINO=#{emino} AND EMTYPE='R'
 	</select>
 
     <insert id="insertMailFile" parameterType="gu.common.FileVO" >

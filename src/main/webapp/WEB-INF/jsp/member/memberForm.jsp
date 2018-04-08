@@ -133,7 +133,7 @@ function fn_changePWSave() {
             </div>
             <button type="button" class="btn btn-primary" onclick="fn_formSubmit()"><s:message code="common.btnSave"/></button>
             <button type="button" class="btn btn-primary" onclick="fn_changePW()"><s:message code="common.changePassword"/></button>
-            
+            <button type="button" class="btn btn-default" onclick="fn_moveToURL('mailInfoList')">메일 정보 등록</button>
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->

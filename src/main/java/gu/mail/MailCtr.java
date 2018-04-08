@@ -34,9 +34,11 @@ public class MailCtr {
      */
     @RequestMapping(value = "/receiveMails")
     public String receiveMails(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap) {
-        // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
-        
+        List<?> mailInfoList = mailSvc.selectMailInfoList(userno);
+    	if (mailInfoList.size()==0) return "mail/MailInfoGuide";
+    	
+        // 페이지 공통: alert
         Integer alertcount = etcSvc.selectAlertCount(userno);
         modelMap.addAttribute("alertcount", alertcount);
     	
@@ -53,9 +55,11 @@ public class MailCtr {
     
     @RequestMapping(value = "/sendMails")
     public String sendMails(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap) {
-        // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
-        
+        List<?> mailInfoList = mailSvc.selectMailInfoList(userno);
+    	if (mailInfoList.size()==0) return "mail/MailInfoGuide";
+
+    	// 페이지 공통: alert
         Integer alertcount = etcSvc.selectAlertCount(userno);
         modelMap.addAttribute("alertcount", alertcount);
     	
@@ -75,15 +79,15 @@ public class MailCtr {
      */
     @RequestMapping(value = "/mailForm")
     public String mailForm(HttpServletRequest request, MailVO mailInfo, ModelMap modelMap) {
-        // 페이지 공통: alert
         String userno = request.getSession().getAttribute("userno").toString();
+        List<?> mailInfoList = mailSvc.selectMailInfoList(userno);
+    	if (mailInfoList.size()==0) return "mail/MailInfoGuide";
         
+        // 페이지 공통: alert
         Integer alertcount = etcSvc.selectAlertCount(userno);
         modelMap.addAttribute("alertcount", alertcount);
     	
         // 
-        
-        List<?> mailInfoList = mailSvc.selectMailInfoList(userno);
         modelMap.addAttribute("mailInfoList", mailInfoList);
         
         if (mailInfo.getEmno() != null) {
