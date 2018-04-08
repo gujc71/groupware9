@@ -103,28 +103,20 @@
                             <a href="schList"><i class="fa fa-calendar fa-fw"></i> 일정관리</a>
                         </li>                        
                         <li>
-                            <a href="#"><i class="fa fa-music fa-fw"></i> 샘플<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-envelope-o fa-fw"></i> 메일<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
                                 <li>
-                                    <a href="sample1">샘플 1: 조직도/사용자</a>
+                                    <a href="mailForm">새메일</a> 
                                 </li>
                                 <li>
-		                            <a href="sample2">샘플 2: 날짜 선택 </a>
-                                </li>
-                                <li> 
-		                            <a href="sample3">샘플 3: 챠트</a>
+		                            <a href="receiveMails">받은 메일</a>
                                 </li>
                                 <li>
-		                            <a href="sample4">샘플 4: List & Excel</a>
+		                            <a href="sendMails">보낸 메일</a>
                                 </li>
-                                <li>
-		                            <a href="crudList">샘플 5: CRUD</a>
-                                </li>
-                                <li>
-		                            <a href="chkList">샘플 6: Multy Checkbox</a>
-                                </li>
-	                        </ul>                            
-                        </li>
+	                        </ul>                             
+                        </li>                        
+                       
                         <c:if test='${sessionScope.userrole == "A"}'>
 	                        <li>
 	                            <a href="#"> <s:message code="memu.admin"/></a>

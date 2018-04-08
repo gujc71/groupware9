@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="mail">
+
+    <sql id="includeMail">
+        WHERE EM.DELETEFLAG='N' AND EMTYPE=#{searchExt1}
+        <if test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+            <foreach item="item" index="index" collection="searchTypeArr" separator=" OR " open="AND (" close=")">
+                 ${item} LIKE CONCAT('%', #{searchKeyword},'%' )
+            </foreach>
+        </if>               
+    </sql>
+
+    <select id="selectReceiveMailCount" resultType="Integer" parameterType="gu.common.SearchVO">
+        SELECT COUNT(*)
+          FROM EML_MAIL EM
+         <include refid="includeMail"/>
+    </select> 
+    
+    <select id="selectReceiveMailList" resultType="gu.mail.MailVO" parameterType="gu.common.SearchVO">
+        SELECT EMNO, EMTYPE, EMSUBJECT, EMFROM, DATE_FORMAT(ENTRYDATE,'%y-%m-%d %h:%s') ENTRYDATE, EM.USERNO, USERNM
+        	 , (SELECT EAADDRESS FROM EML_ADDRESS WHERE EMNO=EM.EMNO AND EATYPE='T' ORDER BY EASEQ LIMIT 1) STRTO
+          FROM EML_MAIL EM
+         INNER JOIN COM_USER CU ON EM.USERNO=CU.USERNO
+         <include refid="includeMail"/> 
+         ORDER BY EMNO DESC 
+         <if test="rowStart != null">
+             LIMIT ${rowStart-1}, 10
+         </if>
+    </select> 
+        
+    <insert id="insertMail" parameterType="gu.mail.MailVO" useGeneratedKeys="true" keyProperty="emno">
+        INSERT INTO EML_MAIL(EMTYPE, EMSUBJECT, EMFROM, EMCONTENTS, USERNO, EMINO, DELETEFLAG, ENTRYDATE) 
+        VALUES (#{emtype}, #{emsubject}, #{emfrom}, #{emcontents}, #{userno}, #{emino}, 'N',
+        		<if test="entrydate!=null">#{entrydate}</if><if test="entrydate==null">now()</if>)
+    </insert>
+
+    <update id="updateMail" parameterType="gu.mail.MailVO">
+        UPDATE EML_MAIL
+           SET EMSUBJECT=#{emsubject}, EMCONTENTS=#{emcontents}
+         WHERE EMNO=#{emno} 
+    </update> 
+        
+
+    <insert id="insertMailAddress" parameterType="gu.mail.MailAddressVO" >
+        INSERT INTO EML_ADDRESS(EMNO, EATYPE, EASEQ, EAADDRESS)
+        VALUES (#{emno}, #{eatype}, #{easeq}, #{eaaddress})
+    </insert>
+
+    <select id="selectLastMail" parameterType="String" resultType="String">
+    	SELECT MAX(ENTRYDATE)
+    	  FROM EML_MAIL
+    	 WHERE EMINO=#{emino}
+	</select>
+
+    <insert id="insertMailFile" parameterType="gu.common.FileVO" >
+        INSERT INTO EML_MAILFILE (EMNO, FILENAME, REALNAME, FILESIZE)
+        VALUES (#{parentPK}, #{filename}, #{realname}, #{filesize})
+    </insert>
+            
+    <select id="selectReceiveMailOne" parameterType="gu.mail.MailVO" resultType="gu.mail.MailVO">
+        SELECT EMNO, EMTYPE, EMSUBJECT, EMFROM, EMCONTENTS, DATE_FORMAT(ENTRYDATE,'%y-%m-%d %h:%s') ENTRYDATE, EM.USERNO, USERNM 
+          FROM EML_MAIL EM
+         INNER JOIN COM_USER CU ON EM.USERNO=CU.USERNO
+         WHERE EM.DELETEFLAG='N' AND EMNO=#{emno}
+    </select> 
+
+    <select id="selectMailAddressList" parameterType="gu.mail.MailAddressVO" resultType="gu.mail.MailAddressVO">
+        SELECT EAADDRESS
+          FROM EML_ADDRESS
+         WHERE EMNO=#{emno} AND EATYPE=#{eatype}
+         ORDER BY EASEQ
+    </select> 
+    
+    <select id="selectMailFileList" parameterType="String" resultType="gu.common.FileVO">
+        SELECT FILENO, FILENAME, REALNAME, FILESIZE
+          FROM EML_MAILFILE
+         WHERE EMNO=#{emno}
+         ORDER BY FILENO DESC 
+    </select> 
+            
+    <delete id="deleteMail" parameterType="gu.mail.MailVO">
+        UPDATE EML_MAIL
+           SET DELETEFLAG='Y'
+         WHERE EMNO=#{emno} 
+    </delete>  
+
+    <delete id="deleteMails" parameterType="java.util.Map">
+        UPDATE EML_MAIL
+           SET DELETEFLAG='Y'
+         WHERE EMNO IN 
+		    <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+		        #{item}
+		    </foreach>         
+    </delete>
+    
+
+  
+
+
+             
+</mapper>
+

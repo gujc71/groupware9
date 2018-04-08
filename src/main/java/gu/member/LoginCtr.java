@@ -78,6 +78,7 @@ public class LoginCtr {
         session.removeAttribute("userrole");        
         session.removeAttribute("userno");        
         session.removeAttribute("usernm");
+        session.removeAttribute("mail");
         
         return "redirect:/memberLogin";
     }

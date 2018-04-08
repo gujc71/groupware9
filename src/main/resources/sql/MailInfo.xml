@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+    <select id="selectMailInfoList" resultType="gu.mail.MailInfoVO" parameterType="String">
+        SELECT EMINO, EMIIMAP, EMISMTP, EMIUSER, EMIPW, EMI.USERNO, USERNM
+          FROM EML_MAILINFO EMI
+         INNER JOIN COM_USER CU ON EMI.USERNO=CU.USERNO
+         WHERE EMI.DELETEFLAG='N' AND EMI.USERNO=#{userno}
+         ORDER BY EMINO  
+    </select>   
+            
+        
+    <insert id="insertMailInfo" parameterType="gu.mail.MailInfoVO" >
+        INSERT INTO EML_MAILINFO(EMIIMAP, EMISMTP, EMIUSER, EMIPW, USERNO, ENTRYDATE, DELETEFLAG)
+        VALUES (#{emiimap}, #{emismtp}, #{emiuser}, #{emipw}, #{userno}, NOW(), 'N')
+    </insert>
+    
+    <update id="updateMailInfo" parameterType="gu.mail.MailInfoVO">
+        UPDATE EML_MAILINFO
+           SET EMIIMAP=#{emiimap}, EMISMTP=#{emismtp}, EMIUSER=#{emiuser}, EMIPW=#{emipw}
+         WHERE EMINO=#{emino} 
+    </update> 
+        
+    <select id="selectMailInfoOne" resultType="gu.mail.MailInfoVO" parameterType="String">
+        SELECT EMINO, EMIIMAP, EMISMTP, EMIUSER, EMIPW, EMI.USERNO, USERNM
+          FROM EML_MAILINFO EMI
+         INNER JOIN COM_USER CU ON EMI.USERNO=CU.USERNO
+         WHERE EMI.EMINO=#{emino}
+    </select>      
+    
+    <delete id="deleteMailInfo" parameterType="gu.mail.MailInfoVO">
+        UPDATE EML_MAILINFO
+           SET DELETEFLAG='Y'
+         WHERE EMINO=#{emino} 
+    </delete> 
+  
+</mapper>
+
