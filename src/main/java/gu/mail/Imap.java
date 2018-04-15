@@ -131,7 +131,7 @@ public class Imap {
 		    	MailVO mailInfo = new MailVO();
 				dumpPart(msgs[i], mailInfo);
 		    	msgList.add(mailInfo);
-		    	if (msgList.size()==10) break; // commit by 100
+		    	if (msgList.size()==100) break; // commit by 100
 		    }
 		} catch (Exception e) {
 		}

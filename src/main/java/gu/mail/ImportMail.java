@@ -35,7 +35,6 @@ public class ImportMail  implements Runnable {
         	     	ArrayList<MailVO> msgList = mail.getMail(cnt);
         	     	mailSvc.insertMails(msgList, userno, mivo.getEmino());
         	     	cnt += msgList.size();
-        		    break;
         	 	}
         	 	mail.disconnect();        		
         	}
