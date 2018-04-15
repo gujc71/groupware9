@@ -6,7 +6,7 @@
 간단한 화면 설계는 [여기](https://docs.google.com/presentation/d/1QcCr2WwDNhcEbF3v9Kr_KQGe0ohOSXVOW_gneKO7VBw/edit#slide=id.p)서 확인할 수 있다.
 
 ### 주요 구현 기능 ###
-- 일정: 일간, 주간, 월간
+- 일정: 월간일정
 - 결제: 기안하기, 결재 받을 문서, 결재 할 문서
 - 전자우편: 새메일, 받은 메일, 보낸 메일
 - 게시판 ([Project9](https://github.com/gujc71/project9/))
