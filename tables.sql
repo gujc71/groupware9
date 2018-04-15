@@ -385,7 +385,7 @@ BEGIN
       END IF;
       
 RETURN ret_;
-END
+END;
 
 DELIMITER $$
 CREATE PROCEDURE `makeCalendar`()
@@ -401,4 +401,4 @@ BEGIN
 		SET sdate = DATE_ADD(sdate, INTERVAL 1 DAY);
 	END WHILE;
     
-END
+END;
