@@ -27,7 +27,7 @@
 
 ### Branches ###
 - master: 연습용
-- useful: 버그 수정, 기븐 보완을 거쳐 제법 유용한 버전
+- useful: 버그 수정, 기븐 보완을 거쳐 제법 유용한 버전. 작성중 ...
 
 ### License ###
 GPL v3
