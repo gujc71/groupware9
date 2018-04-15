@@ -131,7 +131,7 @@ function fn_selectUsers(docsignpath) {
 			        <button class="btn btn-outline btn-primary" onclick="fn_tempSubmit()">임시저장</button>
 			    </div>
                 <div class="col-lg-1">
-			        <button class="btn btn-outline btn-primary" onclick="fn_formTSubmit()">결재상신</button>
+			        <button class="btn btn-outline btn-primary" onclick="fn_formSubmit()">결재상신</button>
 			    </div>
                 <div class="col-lg-1">
 			        <button class="btn btn-outline btn-primary" onclick="fn_signPath()">결재경로</button>

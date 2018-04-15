@@ -35,7 +35,9 @@
 function fn_formSubmit(){
 	if (!confirm("저장 하시겠습니까?")) return;
 	if ( ! chkInputValue("#emiimap", "IMAP 서버주소")) return false;
+	if ( ! chkInputValue("#emiimapport", "IMAP 서버 포트")) return false;
 	if ( ! chkInputValue("#emismtp", "SMTP 서버주소")) return false;
+	if ( ! chkInputValue("#emismtpport", "SMTP 서버 포트")) return false;
 	if ( ! chkInputValue("#emiuser", "계정 정보")) return false;
 	if ( ! chkInputValue("#emipw", "비밀번호")) return false;
 	
@@ -81,11 +83,19 @@ function fn_delete(){
 	                            <div class="col-lg-4">
 	                            	<input type="text" class="form-control" id="emiimap" name="emiimap" maxlength="30"  value="<c:out value="${mailInfoInfo.emiimap}"/>">
 	                            </div>
+	                            <label class="col-lg-1">포트</label>
+	                            <div class="col-lg-1">
+	                            	<input type="text" class="form-control" id="emiimapport" name="emiimapport" maxlength="5" value="<c:out value="${mailInfoInfo.emiimapport}"/>">
+	                            </div>
 	                        </div> 
 	                    	<div class="row form-group">
 	                            <label class="col-lg-2">SMTP 서버주소</label>
 	                            <div class="col-lg-4">
 	                            	<input type="text" class="form-control" id="emismtp" name="emismtp" maxlength="30" value="<c:out value="${mailInfoInfo.emismtp}"/>">
+	                            </div>
+	                            <label class="col-lg-1">포트</label>
+	                            <div class="col-lg-1">
+	                            	<input type="text" class="form-control" id="emismtpport" name="emismtpport" maxlength="5"  value="<c:out value="${mailInfoInfo.emismtpport}"/>">
 	                            </div>
 	                        </div> 
 	                    	<div class="row form-group">
@@ -104,7 +114,7 @@ function fn_delete(){
 	                </div>
 				</form>	
 		        <button class="btn btn-outline btn-primary" onclick="fn_formSubmit()"><s:message code="common.btnSave"/></button>
-		        <c:if test="${mailInfoInfo.emino!=null}">;
+		        <c:if test="${mailInfoInfo.emino!=null}">
 		        	<button class="btn btn-outline btn-primary" onclick="fn_delete()"><s:message code="common.btnDelete"/></button>
 		        </c:if>
             </div>

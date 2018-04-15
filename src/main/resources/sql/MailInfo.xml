@@ -4,7 +4,7 @@
 <mapper namespace="board">
 
     <select id="selectMailInfoList" resultType="gu.mail.MailInfoVO" parameterType="String">
-        SELECT EMINO, EMIIMAP, EMISMTP, EMIUSER, EMIPW, EMI.USERNO, USERNM
+        SELECT EMINO, EMIIMAP, EMIIMAPPORT, EMISMTP, EMISMTPPORT, EMIUSER, EMIPW, EMI.USERNO, USERNM
           FROM EML_MAILINFO EMI
          INNER JOIN COM_USER CU ON EMI.USERNO=CU.USERNO
          WHERE EMI.DELETEFLAG='N' AND EMI.USERNO=#{userno}
@@ -13,18 +13,19 @@
             
         
     <insert id="insertMailInfo" parameterType="gu.mail.MailInfoVO" >
-        INSERT INTO EML_MAILINFO(EMIIMAP, EMISMTP, EMIUSER, EMIPW, USERNO, ENTRYDATE, DELETEFLAG)
-        VALUES (#{emiimap}, #{emismtp}, #{emiuser}, #{emipw}, #{userno}, NOW(), 'N')
+        INSERT INTO EML_MAILINFO(EMIIMAP, EMIIMAPPORT, EMISMTP, EMISMTPPORT, EMIUSER, EMIPW, USERNO, ENTRYDATE, DELETEFLAG)
+        VALUES (#{emiimap}, #{emiimapport}, #{emismtp}, #{emismtpport}, #{emiuser}, #{emipw}, #{userno}, NOW(), 'N')
     </insert>
     
     <update id="updateMailInfo" parameterType="gu.mail.MailInfoVO">
         UPDATE EML_MAILINFO
-           SET EMIIMAP=#{emiimap}, EMISMTP=#{emismtp}, EMIUSER=#{emiuser}, EMIPW=#{emipw}
+           SET EMIIMAP=#{emiimap}, EMIIMAPPORT=#{emiimapport}, EMISMTP=#{emismtp}, EMISMTPPORT=#{emismtpport}
+             , EMIUSER=#{emiuser}, EMIPW=#{emipw}
          WHERE EMINO=#{emino} 
     </update> 
         
     <select id="selectMailInfoOne" resultType="gu.mail.MailInfoVO" parameterType="String">
-        SELECT EMINO, EMIIMAP, EMISMTP, EMIUSER, EMIPW, EMI.USERNO, USERNM
+        SELECT EMINO, EMIIMAP, EMIIMAPPORT, EMISMTP, EMISMTPPORT, EMIUSER, EMIPW, EMI.USERNO, USERNM
           FROM EML_MAILINFO EMI
          INNER JOIN COM_USER CU ON EMI.USERNO=CU.USERNO
          WHERE EMI.EMINO=#{emino}

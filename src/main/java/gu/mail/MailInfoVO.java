@@ -2,8 +2,10 @@ package gu.mail;
 
 public class MailInfoVO {
     private String  emino, 
-    				emiimap, 
+    				emiimap,
+    				emiimapport,
     				emismtp, 
+    				emismtpport,
     				emiuser, 
     				emipw, 
     				userno,
@@ -63,6 +65,22 @@ public class MailInfoVO {
 
 	public void setUsernm(String usernm) {
 		this.usernm = usernm;
+	}
+
+	public String getEmiimapport() {
+		return emiimapport;
+	}
+
+	public String getEmismtpport() {
+		return emismtpport;
+	}
+
+	public void setEmiimapport(String emiimapport) {
+		this.emiimapport = emiimapport;
+	}
+
+	public void setEmismtpport(String emismtpport) {
+		this.emismtpport = emismtpport;
 	}
 
     

@@ -163,7 +163,7 @@ public class Imap {
 	
 		Object o = p.getContent();
 		if (o instanceof String) {
-			//mailInfo.setEmcontents((String)o);
+			mailInfo.setEmcontents((String)o);
 		} else if (o instanceof Multipart) {
 		    Multipart mp = (Multipart)o;
 		    int count = mp.getCount();

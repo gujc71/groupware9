@@ -125,10 +125,11 @@ public class MailSvc {
     	
         try {
         	MailInfoVO fromVO = sqlSession.selectOne("selectMailInfoOne", param.getEmfrom());
+        	param.setEmino(param.getEmfrom());
         	param.setEmfrom(fromVO.getEmiuser());
         	insertMailOne(param);
 
-    		SendMail sm = new SendMail(fromVO.getEmismtp(), fromVO.getEmiuser(), fromVO.getUsernm(), fromVO.getEmipw());
+    		SendMail sm = new SendMail(fromVO.getEmismtp(), fromVO.getEmismtpport(), fromVO.getEmiuser(), fromVO.getUsernm(), fromVO.getEmipw());
    			sm.send(true, to, cc, bcc, param.getEmsubject(), param.getEmcontents());//
         	
 	        txManager.commit(status);

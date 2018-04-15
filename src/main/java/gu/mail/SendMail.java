@@ -27,23 +27,25 @@ public class SendMail {
 
     static final Logger LOGGER = LoggerFactory.getLogger(SendMail.class);
 	private String SMTP_HOST;
-	private String SMTP_PORT = "465";
+	private String SMTP_PORT;		// "465";
 	private String SMTP_ACCOUNT;
 	private String SMTP_PASSWD;
 	private String SMTP_USERNM;
-	private final String smtpssl = "true";
+	private String smtpssl = "true";
 
 	public static void main(String args[]) throws Exception {
 
-		SendMail sm = new SendMail("", "", "", "");
-		sm.send(true, new String[]{"@hanmail.net"}, new String[]{}, new String[]{}, "test", "body1111");
+		SendMail sm = new SendMail("", "", "", "", "");
+		sm.send(true, new String[]{""}, new String[]{}, new String[]{}, "test", "body1111");
 	}
 	
-	public SendMail(String host, String user, String usernm, String pw) {
+	public SendMail(String host, String port, String user, String usernm, String pw) {
 		this.SMTP_HOST = host;
+		this.SMTP_PORT = port;
 		this.SMTP_ACCOUNT = user;
 		this.SMTP_USERNM = usernm;
 		this.SMTP_PASSWD = pw;
+		if (!"465".equals(port)) smtpssl="false";
 	}
 	
 	public void send(boolean debug, String[] recipients, String[] cc, String[] bcc, String subject, String contents) throws MessagingException {
@@ -54,7 +56,7 @@ public class SendMail {
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.EnableSSL.enable", "true");
 		props.put("mail.smtp.port", SMTP_PORT);
-		//props.put("mail.smtp.from", emailFrom);
+
 		props.put("mail.smtp.socketFactory.port", SMTP_PORT);
 		if ("true".equals(smtpssl)){
 			props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");

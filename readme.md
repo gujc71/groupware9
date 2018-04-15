@@ -9,7 +9,7 @@
 - 일정: 일간, 주간, 월간
 - 결제: 기안하기, 결재 받을 문서, 결재 할 문서
 - 전자우편: 새메일, 받은 메일, 보낸 메일
-- 게시판
+- 게시판 ([Project9](https://github.com/gujc71/project9/))
 
 ### 개발 환경 ###
     Programming Language - Java 1.8

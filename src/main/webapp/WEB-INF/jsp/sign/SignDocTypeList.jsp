@@ -57,7 +57,7 @@ function fn_formSubmit(){
             <div class="panel panel-default"> 
             	<div class="panel-body">
 					<c:if test="${listview.size()==0}">
-						<div class="listBody height200">양식을 등록하세요.</div>
+						<div class="listBody height200">등록된 양식이 없습니다.<br/>결재문서양식이 등록되어야 합니다. 관리자에게  연락하세요.</div>
 					</c:if>
 					
 					<br/>
