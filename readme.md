@@ -25,6 +25,10 @@
 - http://localhost:8080/groupware9/로 접속
 - ID/PW: admin/admin, user1/user1, user2/user2 ...
 
+### Branches ###
+- master: 연습용
+- useful: 버그 수정, 기븐 보완을 거쳐 제법 유용한 버전
+
 ### License ###
 GPL v3
   
